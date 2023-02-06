@@ -31,13 +31,14 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").set
 | d           | Diagnostic    |
 | l, L, C-l   | Location list |
 | q, Q, C-q   | Quickfix      |
+| s           | Spell         |
 | t, T, C-t   | Tag           |
 
 ## Add new operator
 
-You can add/override operators or easily. For example, with [GitSigns](https://github.com/lewis6991/gitsigns.nvim) installed, then:
+You can add/override operators or easily. For example, with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim) installed, then:
 ```
-require("nap").nap('n', "GitSigns next_hunk", "GitSigns prev_hunk", "Next diff", "Previous diff")
+require("nap").nap('h', "GitSigns next_hunk", "GitSigns prev_hunk", "Next diff", "Previous diff")
 ```
 
 ## Config
@@ -63,3 +64,7 @@ replaces the default `;` ','), so `<Space>` is available.
 
 So you need find a pair of keys works for your setup, for example, `Enter` `Tab`, `Space` `C-Space`,
 ';' ',', etc.
+
+## Credits
+
+* [unimpaired.vim](https://github.com/tpope/vim-unimpaired), which I like. 
