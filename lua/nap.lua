@@ -47,13 +47,13 @@ function M.setup(config)
 	vim.keymap.set("n", next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
 	vim.keymap.set("n", prev_repeat, function() exec_last(false) end, { desc = "Repeat previous" })
 
-	M.nap("a", "next", "previous", "Next argument", "Previous argument")
-	M.nap("A", "last", "first", "Last argument", "First argument")
+	M.nap("a", "tabnext", "tabprevious", "Next tab", "Previous tab")
+	M.nap("A", "tablast", "tabfirst", "Last tab", "First tab")
 
 	M.nap("b", "bnext", "bprevious", "Next buffer", "Previous buffer")
 	M.nap("B", "blast", "bfist", "Last buffer", "First buffer")
 
-	M.nap("d", "lua vim.diagnostic.goto_next()", "lua vim.diagnostic.goto_prev()", "Diagnostic")
+	M.nap("d", "lua vim.diagnostic.goto_next()", "lua vim.diagnostic.goto_prev()", "Next diagnostic", "Previous diagnostic")
 
 	M.nap("l", "lnext", "lprevious", "Next item in location list", "Previous item in location list")
 	M.nap("L", "llast", "lfist", "Last item in location list", "First item in location list")
@@ -62,6 +62,8 @@ function M.setup(config)
 	M.nap("q", "cnext", "cprevious", "Next item in quickfix list", "Previous item in quickfix list")
 	M.nap("Q", "clast", "cfist", "Last item in quickfix list", "First item in quickfix list")
 	M.nap("<C-q", "cnfile", "cpfile", "Next item in quickfix list", "Previous item in quickfix list")
+
+	M.nap("s", "normal ]s", "normal [s", "Next spell error", "Previous spell error")
 
 	M.nap("t", "tnext", "tprevious", "Next tag", "Previous tag")
 	M.nap("T", "tlast", "tfist", "Last tag", "First tag")

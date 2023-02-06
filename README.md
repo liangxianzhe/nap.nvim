@@ -26,7 +26,7 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").set
 
 | Operator    | Description   |
 | ----------- | -----------   |
-| a, A        | Argument      |
+| a, A        | Tab           |
 | b, B        | Buffer        |
 | d           | Diagnostic    |
 | l, L, C-l   | Location list |
@@ -34,16 +34,18 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").set
 | s           | Spell         |
 | t, T, C-t   | Tag           |
 
+I plan to add File operator, similar to unimpaired. Feel free to suggest others.
+
 ## Add new operator
 
-You can add/override operators or easily. For example, with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim) installed, then:
-```
-require("nap").nap('h', "GitSigns next_hunk", "GitSigns prev_hunk", "Next diff", "Previous diff")
-```
+You can add/override operators or easily. For example: 
+* With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim), `require("nap").nap('h', "GitSigns next_hunk", "GitSigns prev_hunk", "Next diff", "Previous diff")`
+* With [Aerial](https://github.com/stevearc/aerial.nvim), `require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")`
 
 ## Config
 
-The default config just defines the keys:
+The default config defines the keys:
+
 ```
 require("nap").setup({
     next_prefix = "<cr>"
@@ -52,19 +54,23 @@ require("nap").setup({
     prev_repeat = "<tab>"
 })
 ```
-You will need two pairs of keys: "prefix" keys to trigger the first jump, and "repeat" keys to
-repeat with a single press. `<Enter>` and `<Tab>` are choosing because most people don't map them.
 
-However, using the same key for "prefix" and "repeat" has one issue. When you press `<Enter>`, vim
-will need to wait [timeoutlen] to see if you press a operator or not. 
+We need two pairs of keys: `prefix` keys to trigger the first jump, and `repeat` keys to repeat with
+a single press. `<Enter>` and `<Tab>` are choosing as defaults because most people don't map them.
 
-To make it smoother, I use `<Space>` and `C-<Space>` as the prefix keys, and use `<Enter>` and
-`<Tab>` as repeat keys. This is because I use `;` as leader (thanks to leap, `<Enter>` `<Tab>`
-replaces the default `;` ','), so `<Space>` is available.
+However, setting "prefix" and "repeat" to the same key has one issue. When pressing `<Enter>` to
+repeat jump, vim will need to wait
+[timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
+`<Enter>` or `<Enter>b`.
 
-So you need find a pair of keys works for your setup, for example, `Enter` `Tab`, `Space` `C-Space`,
-';' ',', etc.
+To make it smoother, I use `<Space>` and `C-<Space>` as the prefix keys, so that `<Enter>` and
+`<Tab>` dedicated for repeating purpose.
+
+You can find keys works for your setup, for example: 
+* `Enter` `Tab`
+* `Space` `C-Space`,
+* `;` `,` (using Leap or similar plugins to free these two keys)
 
 ## Credits
 
-* [unimpaired.vim](https://github.com/tpope/vim-unimpaired), which I like. 
+* [unimpaired.vim](https://github.com/tpope/vim-unimpaired)
