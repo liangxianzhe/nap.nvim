@@ -66,9 +66,9 @@ repeat jump, vim will need to wait
 `<Enter>` or `<Enter>b`.
 
 To make it smoother, personally I use `<Space>` and `C-<Space>` as the prefix keys, so that
-`<Enter>` and `<Tab>` dedicated for repeating purpose.
+`<Enter>` and `<Tab>` are dedicated for repeating purpose.
 
-You can find keys works for your setup, for example: 
+You can find keys work for your setup, for example: 
 * `Enter` and `Tab`
 * `Space` and `C-Space`
 * `;` and `,` (using Leap or similar plugins to free these two keys)
