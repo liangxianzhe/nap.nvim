@@ -65,13 +65,15 @@ repeat jump, vim will need to wait
 [timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
 `<Enter>` or `<Enter>b`.
 
-To make it smoother, personally I use `<Space>` and `C-<Space>` as the prefix keys, so that
-`<Enter>` and `<Tab>` are dedicated for repeating purpose.
+To make it smoother, personally I use `<Space>` and `<Space><Space>` as prefix keys, leaving 
+`<Enter>` and `<Tab>` dedicated for repeating purpose.
 
-You can find keys work for your setup, for example: 
-* `Enter` and `Tab`
-* `Space` and `C-Space`
+You can choose keys work for your setup, for example: 
+* `<Enter>` and `<Tab>`
+* `<Space>` and `<Space><Space>`
 * `;` and `,` (use Leap or similar plugins to free these two keys)
+* `]` and `[` (":help ]" to check default mappings)
+* `>` and `<` (":help >" to check default mappings)
 
 ## Credits
 
