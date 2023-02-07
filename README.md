@@ -34,7 +34,9 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").set
 | s           | Spell         |
 | t, T, C-t   | Tag           |
 
-I plan to add File operator, similar to unimpaired. Feel free to suggest others.
+Plans, feel free to suggest others:
+[] Add File operator, similar to unimpaired.
+[] Support count.
 
 ## Add new operator
 
@@ -63,13 +65,13 @@ repeat jump, vim will need to wait
 [timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
 `<Enter>` or `<Enter>b`.
 
-To make it smoother, I use `<Space>` and `C-<Space>` as the prefix keys, so that `<Enter>` and
-`<Tab>` dedicated for repeating purpose.
+To make it smoother, personally I use `<Space>` and `C-<Space>` as the prefix keys, so that
+`<Enter>` and `<Tab>` dedicated for repeating purpose.
 
 You can find keys works for your setup, for example: 
-* `Enter` `Tab`
-* `Space` `C-Space`,
-* `;` `,` (using Leap or similar plugins to free these two keys)
+* `Enter` and `Tab`
+* `Space` and `C-Space`
+* `;` and `,` (using Leap or similar plugins to free these two keys)
 
 ## Credits
 
