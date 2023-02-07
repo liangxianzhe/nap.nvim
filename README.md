@@ -11,7 +11,7 @@ A lightweight plugin inspired by [unimpaired.vim](https://github.com/tpope/vim-u
 
 `<Enter>` to jump to next, `<Tab>` to jump to previous (similar to [leap](https://github.com/ggandor/leap.nvim)).
 
-Using `b` (buffer) as an example:
+Use `b` (buffer) as an example:
 
 * `<Enter>b` jump to next buffer, `<Tab>b` jump to previous buffer. Then just pressing
 `<Enter><Enter><Enter><Tab><Tab>...` to cycle through buffers.
@@ -71,7 +71,7 @@ To make it smoother, personally I use `<Space>` and `C-<Space>` as the prefix ke
 You can find keys work for your setup, for example: 
 * `Enter` and `Tab`
 * `Space` and `C-Space`
-* `;` and `,` (using Leap or similar plugins to free these two keys)
+* `;` and `,` (use Leap or similar plugins to free these two keys)
 
 ## Credits
 
