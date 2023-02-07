@@ -57,11 +57,13 @@ function M.setup(config)
 
 	M.nap("l", "lnext", "lprevious", "Next item in location list", "Previous item in location list")
 	M.nap("L", "llast", "lfist", "Last item in location list", "First item in location list")
-	M.nap("<C-l", "lnfile", "lpfile", "Next item in location list", "Previous item in location list")
+	M.nap("<C-l", "lnfile", "lpfile", "Next item in different file in location list",
+		"Previous item in different file in location list")
 
 	M.nap("q", "cnext", "cprevious", "Next item in quickfix list", "Previous item in quickfix list")
 	M.nap("Q", "clast", "cfist", "Last item in quickfix list", "First item in quickfix list")
-	M.nap("<C-q", "cnfile", "cpfile", "Next item in quickfix list", "Previous item in quickfix list")
+	M.nap("<C-q", "cnfile", "cpfile", "Next item in different file in quickfix list",
+		"Previous item in different file in quickfix list")
 
 	M.nap("s", "normal ]s", "normal [s", "Next spell error", "Previous spell error")
 
