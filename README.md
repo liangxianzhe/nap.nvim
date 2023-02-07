@@ -34,9 +34,9 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").set
 | s           | Spell         |
 | t, T, C-t   | Tag           |
 
-Plans, feel free to suggest others:
-[] Add File operator, similar to unimpaired.
-[] Support count.
+These are not yet supported, feel free to suggest others:
+- [] Add File operator, similar to unimpaired.
+- [] Support count.
 
 ## Add new operator
 
