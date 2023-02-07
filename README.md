@@ -35,8 +35,8 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").set
 | t, T, C-t   | Tag           |
 
 These are not yet supported, feel free to suggest others:
-- [] Add File operator, similar to unimpaired.
-- [] Support count.
+- [ ] Add File operator, similar to unimpaired.
+- [ ] Support count.
 
 ## Add new operator
 
