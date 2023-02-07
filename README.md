@@ -70,6 +70,7 @@ To make it smoother, personally I use `<Space>` and `<Space><Space>` as prefix k
 
 You can choose keys work for your setup, for example: 
 * `<Enter>` and `<Tab>`
+* `<C-n>` and `<C-p>`
 * `<Space>` and `<Space><Space>`
 * `;` and `,` (use Leap or similar plugins to free these two keys)
 * `]` and `[` (":help ]" to check default mappings)
