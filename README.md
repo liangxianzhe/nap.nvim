@@ -16,11 +16,6 @@ Use `b` (buffer) as an example:
 `<c-n><c-n><c-n><c-p><c-p>...` to cycle through buffers.
 * `<c-n>B` and `<c-p>B` jump to last/first buffer. 
 
-## Install
-
-Add `liangxianzhe/nap-nvim` to your plugin manager. Then add `require("nap").setup()`. You will
-likely want to config the prefix keys, see [Config](#Config).
-
 ## Operators
 
 | Operator    | Description   |
@@ -44,9 +39,11 @@ You can add/override operators or easily. For example:
 * With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim), `require("nap").nap('h', "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")`
 * With [Aerial](https://github.com/stevearc/aerial.nvim), `require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")`
 
-## Config
+## Install and config
 
-The default config defines the keys:
+Add `liangxianzhe/nap-nvim` to your plugin manager. 
+
+Add `require("nap").setup()` to use default keys, or change these default keys:
 
 ```
 require("nap").setup({
