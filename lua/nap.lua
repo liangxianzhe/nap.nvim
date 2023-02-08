@@ -47,6 +47,15 @@ function M.setup(config)
 	vim.keymap.set("n", next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
 	vim.keymap.set("n", prev_repeat, function() exec_last(false) end, { desc = "Repeat previous" })
 
+	if next_repeat == '<cr>' or prev_repeat == '<cr>' then
+		-- <cr> in quickfix window should open the item
+		vim.api.nvim_create_autocmd(
+			"FileType", {
+			pattern = { "qf" },
+			command = [[nnoremap <buffer> <CR> <CR>]]
+		})
+	end
+
 	M.nap("a", "tabnext", "tabprevious", "Next tab", "Previous tab")
 	M.nap("A", "tablast", "tabfirst", "Last tab", "First tab")
 
