@@ -31,8 +31,8 @@ end
 
 -- Add keymaps to navigate between Next And Previous.
 function M.nap(key, next, prev, next_desc, prev_desc)
-	local next_prefix = _config.next_prefix or '<cr>'
-	local prev_prefix = _config.prev_prefix or '<tab>'
+	local next_prefix = _config.next_prefix or '<c-n>'
+	local prev_prefix = _config.prev_prefix or '<c-p>'
 	local next_key = next_prefix .. key
 	local prev_key = prev_prefix .. key
 	vim.keymap.set("n", next_key, function() exec(next, prev, true) end, { desc = next_desc })
@@ -42,13 +42,13 @@ end
 -- Setup.
 function M.setup(config)
 	_config = config or {}
-	local next_repeat = _config.next_repeat or '<cr>'
-	local prev_repeat = _config.prev_repeat or '<tab>'
+	local next_repeat = _config.next_repeat or '<c-n>'
+	local prev_repeat = _config.prev_repeat or '<c-p>'
 	vim.keymap.set("n", next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
 	vim.keymap.set("n", prev_repeat, function() exec_last(false) end, { desc = "Repeat previous" })
 
 	if next_repeat == '<cr>' or prev_repeat == '<cr>' then
-		-- <cr> in quickfix window should open the item
+		-- If <cr> is used to repeat jump, it should still open the item in quickfix window
 		vim.api.nvim_create_autocmd(
 			"FileType", {
 			pattern = { "qf" },
