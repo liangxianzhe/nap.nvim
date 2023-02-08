@@ -69,11 +69,11 @@ Personally I use the following setup and I can cycle through using `<Enter>` `<C
 ```
 require("nap").setup({
     next_prefix = "<space>" -- I use ; as leader so space is free
-    prev_prefix = "<space><space>" -- Which is rarely used
+    prev_prefix = "<c-space>" -- Used much less 
     next_repeat = "<cr>" -- Enter is easy to press
     prev_repeat = "<c-cr>" -- C-Enter is easy too
 })
-`
+```
 
 The best config for you depends on your leader key, your terminal. Here are a few examples,
 feel free to try it out:
@@ -81,7 +81,7 @@ feel free to try it out:
 * `<C-n>` and `<C-p>`
 * `<Enter>` and `<C-Enter>` (Some terminal doesn't support `C-Enter`)
 * `<Enter>` and `\` (If you remap leader key, the original leader key is near Enter)
-* `<Space>` and `<Space><Space>`
+* `<Space>` and `<C-Space>`
 * `;` and `,` (use Leap/Flit or similar plugins to free these two keys)
 * `]` and `[` (":help ]" to check default mappings)
 * `>` and `<` (":help >" to check default mappings)
