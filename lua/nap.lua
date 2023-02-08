@@ -41,8 +41,8 @@ end
 
 -- Setup.
 function M.setup(config)
-	_config = config
-	local next_repeat = _config.next_reeat or '<cr>'
+	_config = config or {}
+	local next_repeat = _config.next_repeat or '<cr>'
 	local prev_repeat = _config.prev_repeat or '<tab>'
 	vim.keymap.set("n", next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
 	vim.keymap.set("n", prev_repeat, function() exec_last(false) end, { desc = "Repeat previous" })
