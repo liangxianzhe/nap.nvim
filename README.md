@@ -36,7 +36,7 @@ These are not yet supported, feel free to suggest others:
 
 You can add/override operators or easily. For example: 
 
-* With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim), `require("nap").nap('h', "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")`
+* With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim), `require("nap").nap('c', "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")`
 * With [Aerial](https://github.com/stevearc/aerial.nvim), `require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")`
 
 ## Install and config
