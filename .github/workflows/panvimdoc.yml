@@ -2,7 +2,7 @@ name: panvimdoc
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - "README.md"
 
