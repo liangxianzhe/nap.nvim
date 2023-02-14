@@ -12,9 +12,9 @@ A lightweight plugin inspired by [unimpaired.vim](https://github.com/tpope/vim-u
 
 Use `b` (buffer) as an example:
 
-* `<c-n>b` jump to next buffer, `<c-p>b` jump to previous buffer. Then just pressing
+* `<c-n>b`/`<c-p>b` jump to next/previous buffer. Then just pressing
 `<c-n><c-n><c-n><c-p><c-p>...` to cycle through buffers.
-* `<c-n>B` and `<c-p>B` jump to last/first buffer. 
+* `<c-n>B`/`<c-p>B` jump to last/first buffer. 
 
 ## Operators
 
@@ -28,7 +28,7 @@ Use `b` (buffer) as an example:
 | s           | Spell         |
 | t, T, C-t   | Tag           |
 
-These are not yet supported, feel free to suggest others:
+The following are not yet supported, feel free to suggest others:
 - [ ] Add File operator, similar to unimpaired.
 - [ ] Support count.
 
@@ -43,7 +43,7 @@ You can add/override operators or easily. For example:
 
 Add `liangxianzhe/nap-nvim` to your plugin manager. 
 
-Add `require("nap").setup()` to use default keys, or change these default keys:
+Add `require("nap").setup()` to use default keys. Or change these default keys:
 
 ```
 require("nap").setup({
@@ -55,14 +55,14 @@ require("nap").setup({
 ```
 
 We need two pairs of keys: `prefix` keys to trigger the first jump, and `repeat` keys to repeat with
-a single press. `<c-n>` and `<c-p>` are choosing as defaults because most people don't map them.
+a single press. `<c-n>` and `<c-p>` are chosen as defaults because most people don't map them.
 
-However, setting "prefix" and "repeat" to the same key has one issue. When pressing `<c-n>` to
+However, setting `prefix` and `repeat` to the same key has one issue. When pressing `<c-n>` to
 repeat jump, vim will need to wait
 [timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
 `<c-n>` or `<c-n>b`.
 
-Personally I use the following setup and I can cycle through using `<Enter>` `<C-Enter>` much faster.
+Personally I use the following setup so I can cycle through using `<Enter>` `<C-Enter>` much faster.
 ```
 require("nap").setup({
     next_prefix = "<space>" -- I use ; as leader so space is free
@@ -72,7 +72,7 @@ require("nap").setup({
 })
 ```
 
-The best config for you depends on your leader key, your terminal. Here are a few examples,
+The best config for you depends on your leader key and your terminal. Here are a few examples,
 feel free to try it out:
 
 * `<C-n>` and `<C-p>`
@@ -82,6 +82,7 @@ feel free to try it out:
 * `;` and `,` (use Leap/Flit or similar plugins to free these two keys)
 * `]` and `[` (":help ]" to check default mappings)
 * `>` and `<` (":help >" to check default mappings)
+* Some `Alt` prefixed keys (Need terminal supports)
 
 ## Credits
 
