@@ -26,6 +26,8 @@ local exec_last = function(norp)
 		call(_next)
 	elseif not norp and _prev ~= nil then
 		call(_prev)
+	else
+		vim.notify(string.format('[nap.nvim] %s stack is empty.', norp and 'Next' or 'Previous'), vim.log.levels.WARN)
 	end
 end
 
