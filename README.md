@@ -47,10 +47,10 @@ Add `require("nap").setup()` to use default keys. Or change these default keys:
 
 ```
 require("nap").setup({
-    next_prefix = "<c-n>"
-    prev_prefix = "<c-p>"
-    next_repeat = "<c-n>"
-    prev_repeat = "<c-p>"
+    next_prefix = "<c-n>",
+    prev_prefix = "<c-p>",
+    next_repeat = "<c-n>",
+    prev_repeat = "<c-p>",
 })
 ```
 
@@ -65,10 +65,10 @@ repeat jump, vim will need to wait
 Personally I use the following setup so I can cycle through using `<Enter>` `<C-Enter>` much faster.
 ```
 require("nap").setup({
-    next_prefix = "<space>" -- I use ; as leader so space is free
-    prev_prefix = "<c-space>" -- Used much less 
-    next_repeat = "<cr>" -- Enter is easy to press
-    prev_repeat = "<c-cr>" -- C-Enter is easy too
+    next_prefix = "<space>", -- I use ; as leader so space is free
+    prev_prefix = "<c-space>", -- Used much less 
+    next_repeat = "<cr>", -- Enter is easy to press
+    prev_repeat = "<c-cr>", -- C-Enter is easy too
 })
 ```
 
