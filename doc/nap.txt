@@ -1,4 +1,4 @@
-*nap.txt*             For NVIM v0.8.0            Last change: 2023 February 14
+*nap.txt*             For NVIM v0.8.0            Last change: 2023 February 17
 
 ==============================================================================
 Table of Contents                                      *nap-table-of-contents*
@@ -30,9 +30,9 @@ TLDR                                                                *nap-tldr*
 Use `b` (buffer) as an example:
 
 
-- `<c-n>b` jump to next buffer, `<c-p>b` jump to previous buffer. Then just pressing
+- `<c-n>b`/`<c-p>b` jump to next/previous buffer. Then just pressing
     `<c-n><c-n><c-n><c-p><c-p>...` to cycle through buffers.
-- `<c-n>B` and `<c-p>B` jump to last/first buffer.
+- `<c-n>B`/`<c-p>B` jump to last/first buffer.
 
 
 OPERATORS                                                      *nap-operators*
@@ -47,8 +47,8 @@ OPERATORS                                                      *nap-operators*
 │t, T, C-t│Tag          │
 
 
-These are not yet supported, feel free to suggest others: - [ ] Add File
-operator, similar to unimpaired. - [ ] Support count.
+The following are not yet supported, feel free to suggest others: - [ ] Add
+File operator, similar to unimpaired. - [ ] Support count.
 
 ADD NEW OPERATOR                                        *nap-add-new-operator*
 
@@ -63,41 +63,41 @@ INSTALL AND CONFIG                                    *nap-install-and-config*
 
 Add `liangxianzhe/nap-nvim` to your plugin manager.
 
-Add `require("nap").setup()` to use default keys, or change these default keys:
+Add `require("nap").setup()` to use default keys. Or change these default keys:
 
 >
     require("nap").setup({
-        next_prefix = "<c-n>"
-        prev_prefix = "<c-p>"
-        next_repeat = "<c-n>"
-        prev_repeat = "<c-p>"
+        next_prefix = "<c-n>",
+        prev_prefix = "<c-p>",
+        next_repeat = "<c-n>",
+        prev_repeat = "<c-p>",
     })
 <
 
 
 We need two pairs of keys: `prefix` keys to trigger the first jump, and
-`repeat` keys to repeat with a single press. `<c-n>` and `<c-p>` are choosing
-as defaults because most people don’t map them.
+`repeat` keys to repeat with a single press. `<c-n>` and `<c-p>` are chosen as
+defaults because most people don’t map them.
 
-However, setting "prefix" and "repeat" to the same key has one issue. When
+However, setting `prefix` and `repeat` to the same key has one issue. When
 pressing `<c-n>` to repeat jump, vim will need to wait |timeoutlen| to
 determine whether its is `<c-n>` or `<c-n>b`.
 
-Personally I use the following setup and I can cycle through using `<Enter>`
+Personally I use the following setup so I can cycle through using `<Enter>`
 `<C-Enter>` much faster.
 
 >
     require("nap").setup({
-        next_prefix = "<space>" -- I use ; as leader so space is free
-        prev_prefix = "<c-space>" -- Used much less 
-        next_repeat = "<cr>" -- Enter is easy to press
-        prev_repeat = "<c-cr>" -- C-Enter is easy too
+        next_prefix = "<space>", -- I use ; as leader so space is free
+        prev_prefix = "<c-space>", -- Used much less 
+        next_repeat = "<cr>", -- Enter is easy to press
+        prev_repeat = "<c-cr>", -- C-Enter is easy too
     })
 <
 
 
-The best config for you depends on your leader key, your terminal. Here are a
-few examples, feel free to try it out:
+The best config for you depends on your leader key and your terminal. Here are
+a few examples, feel free to try it out:
 
 
 - `<C-n>` and `<C-p>`
@@ -107,6 +107,7 @@ few examples, feel free to try it out:
 - `;` and `,` (use Leap/Flit or similar plugins to free these two keys)
 - `]` and `[` (":help ]" to check default mappings)
 - `>` and `<` (":help >" to check default mappings)
+- Some `Alt` prefixed keys (Need terminal supports)
 
 
 CREDITS                                                          *nap-credits*
