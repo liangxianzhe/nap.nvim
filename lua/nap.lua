@@ -76,7 +76,7 @@ function M.setup(config)
 	M.nap("<C-q", "cnfile", "cpfile", "Next item in different file in quickfix list",
 		"Previous item in different file in quickfix list")
 
-	M.nap("s", "normal ]s", "normal [s", "Next spell error", "Previous spell error")
+	M.nap("s", "normal! ]s", "normal! [s", "Next spell error", "Previous spell error")
 
 	M.nap("t", "tnext", "tprevious", "Next tag", "Previous tag")
 	M.nap("T", "tlast", "tfist", "Last tag", "First tag")
