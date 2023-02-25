@@ -81,6 +81,8 @@ function M.setup(config)
 	M.nap("t", "tnext", "tprevious", "Next tag", "Previous tag")
 	M.nap("T", "tlast", "tfist", "Last tag", "First tag")
 	M.nap("<C-t>", "ptnext", "ptprevious", "Next tag in previous window", "Previous tag in previous window")
+
+  M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
 end
 
 return M
