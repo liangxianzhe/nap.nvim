@@ -27,6 +27,7 @@ Use `b` (buffer) as an example:
 | q, Q, C-q   | Quickfix      |
 | s           | Spell         |
 | t, T, C-t   | Tag           |
+| z           | Fold           |
 
 The following are not yet supported, feel free to suggest others:
 - [ ] Add File operator, similar to unimpaired.
