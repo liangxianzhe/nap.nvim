@@ -62,7 +62,97 @@ function M.nap(key, next, prev, next_desc, prev_desc)
 	vim.keymap.set("n", prev_key, function() exec(next, prev, false) end, { desc = prev_desc })
 end
 
+-- File operator.
+
+-- Get directory containing the buffer, or cwd.
+local get_dir_path = function()
+	local cur_buf_path = vim.api.nvim_buf_get_name(0)
+	return cur_buf_path ~= '' and vim.fn.fnamemodify(cur_buf_path, ':p:h') or vim.fn.getcwd()
+end
+
+-- Get files in directory.
+-- @param dir_path string Directory path.
+local get_files = function(dir_path)
+	-- Compute sorted array of all files in target directory
+	local dir_handle = vim.loop.fs_scandir(dir_path)
+	if dir_handle == nil then return end
+	local files_stream = function() return vim.loop.fs_scandir_next(dir_handle) end
+
+	local files = {}
+	for basename, fs_type in files_stream do
+		if fs_type == 'file' then table.insert(files, basename) end
+	end
+
+	-- - Sort files ignoring case
+	table.sort(files, function(x, y) return x:lower() < y:lower() end)
+
+	return files
+end
+
+-- Find index of current buffer in files.
+-- @param files table Table of file names.
+local cur_file_index = function(files)
+	local cur_basename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':t')
+	local cur_basename_ind
+	if cur_basename ~= '' then
+		for i, f in ipairs(files) do
+			if cur_basename == f then
+				cur_basename_ind = i
+				break
+			end
+		end
+	end
+	return cur_basename_ind
+end
+
+-- Jump to next file in the same directory with current buffer, sorted by name. 
+function M.next_file()
+	local dir_path = get_dir_path()
+	local files = get_files(dir_path)
+	if files == nil then return end
+	local index = cur_file_index(files)
+	if index + 1 <= #files then
+		local path_sep = package.config:sub(1, 1)
+		local target_path = dir_path .. path_sep .. files[index + 1]
+		vim.cmd('edit ' .. target_path)
+	end
+end
+
+-- Jump to prev file in the same directory with current buffer, sorted by name. 
+function M.prev_file()
+	local dir_path = get_dir_path()
+	local files = get_files(dir_path)
+	if files == nil then return end
+	local index = cur_file_index(files)
+	if index > 1 then
+		local path_sep = package.config:sub(1, 1)
+		local target_path = dir_path .. path_sep .. files[index - 1]
+		vim.cmd('edit ' .. target_path)
+	end
+end
+
+-- Jump to fist file in the same directory with current buffer, sorted by name. 
+function M.first_file()
+	local dir_path = get_dir_path()
+	local files = get_files(dir_path)
+	if files == nil then return end
+	local path_sep = package.config:sub(1, 1)
+	local target_path = dir_path .. path_sep .. files[1]
+	vim.cmd('edit ' .. target_path)
+end
+
+-- Jump to last file in the same directory with current buffer, sorted by name. 
+function M.last_file()
+	local dir_path = get_dir_path()
+	local files = get_files(dir_path)
+	if files == nil then return end
+	local path_sep = package.config:sub(1, 1)
+	local target_path = dir_path .. path_sep .. files[#files]
+	vim.cmd('edit ' .. target_path)
+end
+
 -- Setup.
+
 ---@param config table Config table.
 function M.setup(config)
 	_config = config or {}
@@ -88,7 +178,8 @@ function M.setup(config)
 
 	M.nap("d", vim.diagnostic.goto_next, vim.diagnostic.goto_prev, "Next diagnostic", "Previous diagnostic")
 
-	M.nap("f", require('nap').next_file, require('nap').prev_file, "Next file", "Previous file")
+	M.nap("f", M.next_file, M.prev_file, "Next file", "Previous file")
+	M.nap("F", M.last_file, M.first_file, "Last file", "First file")
 
 	M.nap("l", "lnext", "lprevious", "Next item in location list", "Previous item in location list")
 	M.nap("L", "llast", "lfist", "Last item in location list", "First item in location list")
