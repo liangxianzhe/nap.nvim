@@ -40,7 +40,7 @@ local exec_last = function(norp)
 		call(_prev)
 	else
 		vim.notify(
-			string.format('[nap.nvim] %s stack is empty.', norp and 'Next' or 'Previous'),
+			string.format('[nap.nvim] [%s] Nothing to repeat.', norp and 'Next' or 'Previous'),
 			vim.log.levels.WARN,
 			{ title = "Next & Prev", icon = norp and '-->' or '<--' }
 		)
