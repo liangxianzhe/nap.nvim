@@ -84,7 +84,7 @@ function M.setup(config)
 	M.nap("A", "tablast", "tabfirst", "Last tab", "First tab")
 
 	M.nap("b", "bnext", "bprevious", "Next buffer", "Previous buffer")
-	M.nap("B", "blast", "bfist", "Last buffer", "First buffer")
+	M.nap("B", "blast", "bfirst", "Last buffer", "First buffer")
 
 	M.nap("d", "lua vim.diagnostic.goto_next()", "lua vim.diagnostic.goto_prev()", "Next diagnostic", "Previous diagnostic")
 
@@ -96,14 +96,14 @@ function M.setup(config)
 		"Previous item in different file in location list")
 
 	M.nap("q", "cnext", "cprevious", "Next item in quickfix list", "Previous item in quickfix list")
-	M.nap("Q", "clast", "cfist", "Last item in quickfix list", "First item in quickfix list")
+	M.nap("Q", "clast", "cfirst", "Last item in quickfix list", "First item in quickfix list")
 	M.nap("<C-q>", "cnfile", "cpfile", "Next item in different file in quickfix list",
 		"Previous item in different file in quickfix list")
 
 	M.nap("s", "normal! ]s", "normal! [s", "Next spell error", "Previous spell error")
 
 	M.nap("t", "tnext", "tprevious", "Next tag", "Previous tag")
-	M.nap("T", "tlast", "tfist", "Last tag", "First tag")
+	M.nap("T", "tlast", "tfirst", "Last tag", "First tag")
 	M.nap("<C-t>", "ptnext", "ptprevious", "Next tag in previous window", "Previous tag in previous window")
 
 	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
