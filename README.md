@@ -24,7 +24,7 @@ Use `b` (buffer) as an example:
 | b, B        | Buffer        |
 | c           | Change list   |
 | d           | Diagnostic    |
-| f           | File          |
+| f, F        | File          |
 | j           | Jump list     |
 | l, L, C-l   | Location list |
 | q, Q, C-q   | Quickfix      |
