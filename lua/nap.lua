@@ -107,6 +107,9 @@ function M.setup(config)
 	M.nap("<C-t>", "ptnext", "ptprevious", "Next tag in previous window", "Previous tag in previous window")
 
 	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
+
+	M.nap("j", "normal! <C-i>", "normal! <C-o>", "Next jump-list item", "Previous jump-list item")
+	M.nap("c", "normal! g,", "normal! g;", "Next change-list item", "Previous change-list item")
 end
 
 return M
