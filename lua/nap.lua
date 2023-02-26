@@ -153,6 +153,16 @@ function M.last_file()
 	vim.cmd('edit ' .. target_path)
 end
 
+-- Jump list
+
+function M.next_jump_list()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, false, true), "t", true)
+end
+
+function M.prev_jump_list()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-o>", true, false, true), "t", true)
+end
+
 -- Setup.
 
 ---@param config table Config table.
@@ -185,7 +195,7 @@ function M.setup(config)
 	M.nap("f", M.next_file, M.prev_file, "Next file", "Previous file")
 	M.nap("F", M.last_file, M.first_file, "Last file", "First file")
 
-	M.nap("j", "normal! <C-i>", "normal! <C-o>", "Next jump-list item", "Previous jump-list item")
+	M.nap("j", M.next_jump_list, M.prev_jump_list, "Next jump-list item", "Previous jump-list item")
 
 	M.nap("l", "lnext", "lprevious", "Next item in location list", "Previous item in location list")
 	M.nap("L", "llast", "lfist", "Last item in location list", "First item in location list")
