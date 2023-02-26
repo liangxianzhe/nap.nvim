@@ -107,6 +107,22 @@ function M.setup(config)
 	M.nap("<C-t>", "ptnext", "ptprevious", "Next tag in previous window", "Previous tag in previous window")
 
 	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
+
+    -- Try to load gitsigns, if installed
+    local ok, gs = pcall(require, "gitsigns")
+    if ok then
+        M.nap(
+            "h",
+            function()
+                vim.schedule(function() gs.next_hunk() end)
+            end,
+            function()
+                vim.schedule(function() gs.prev_hunk() end)
+            end,
+            "Next git hunk",
+            "Previous git hunk"
+        )
+    end
 end
 
 return M
