@@ -176,10 +176,14 @@ function M.setup(config)
 	M.nap("b", "bnext", "bprevious", "Next buffer", "Previous buffer")
 	M.nap("B", "blast", "bfirst", "Last buffer", "First buffer")
 
+	M.nap("c", "normal! g,", "normal! g;", "Next change-list item", "Previous change-list item")
+
 	M.nap("d", vim.diagnostic.goto_next, vim.diagnostic.goto_prev, "Next diagnostic", "Previous diagnostic")
 
 	M.nap("f", M.next_file, M.prev_file, "Next file", "Previous file")
 	M.nap("F", M.last_file, M.first_file, "Last file", "First file")
+
+	M.nap("j", "normal! <C-i>", "normal! <C-o>", "Next jump-list item", "Previous jump-list item")
 
 	M.nap("l", "lnext", "lprevious", "Next item in location list", "Previous item in location list")
 	M.nap("L", "llast", "lfist", "Last item in location list", "First item in location list")
@@ -199,8 +203,6 @@ function M.setup(config)
 
 	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
 
-	M.nap("j", "normal! <C-i>", "normal! <C-o>", "Next jump-list item", "Previous jump-list item")
-	M.nap("c", "normal! g,", "normal! g;", "Next change-list item", "Previous change-list item")
 end
 
 return M

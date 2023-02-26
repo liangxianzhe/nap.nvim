@@ -22,15 +22,18 @@ Use `b` (buffer) as an example:
 | ----------- | -----------   |
 | a, A        | Tab           |
 | b, B        | Buffer        |
+| c           | Change list   |
 | d           | Diagnostic    |
+| f           | File          |
+| j           | Jump list     |
 | l, L, C-l   | Location list |
 | q, Q, C-q   | Quickfix      |
 | s           | Spell         |
 | t, T, C-t   | Tag           |
-| z           | Fold           |
+| z           | Fold          |
 
 The following are not yet supported, feel free to suggest others:
-- [ ] Add File operator, similar to unimpaired.
+- [x] Add File operator, similar to unimpaired.
 - [ ] Support count.
 
 ## Add new operator
