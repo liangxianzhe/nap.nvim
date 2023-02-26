@@ -11,12 +11,14 @@ local _prev = nil
 -- Catch and print the error when executing the command.
 ---@param command string|function Command to execute.
 local call = function(command)
+	local ok, result
 	if type(command) == "string" then
-		local ok, result = pcall(vim.cmd, command)
-		if not ok then print(result) end
+		ok, result = pcall(vim.cmd, command)
 	else
-		local ok, result = pcall(command)
-		if not ok then print(result) end
+		ok, result = pcall(command)
+	end
+	if not ok then
+		vim.notify(string.format(result), vim.log.levels.WARN, { title = "nap.nvim" })
 	end
 end
 
@@ -41,8 +43,8 @@ local exec_last = function(norp)
 	else
 		vim.notify(
 			string.format('[nap.nvim] [%s] Nothing to repeat.', norp and 'Next' or 'Previous'),
-			vim.log.levels.WARN,
-			{ title = "Next & Prev", icon = norp and '-->' or '<--' }
+			vim.log.levels.INFO,
+			{ title = "nap.nvim", icon = norp and '-->' or '<--' }
 		)
 	end
 end
@@ -105,7 +107,7 @@ local cur_file_index = function(files)
 	return cur_basename_ind
 end
 
--- Jump to next file in the same directory with current buffer, sorted by name. 
+-- Jump to next file in the same directory with current buffer, sorted by name.
 function M.next_file()
 	local dir_path = get_dir_path()
 	local files = get_files(dir_path)
@@ -118,7 +120,7 @@ function M.next_file()
 	end
 end
 
--- Jump to prev file in the same directory with current buffer, sorted by name. 
+-- Jump to prev file in the same directory with current buffer, sorted by name.
 function M.prev_file()
 	local dir_path = get_dir_path()
 	local files = get_files(dir_path)
@@ -131,7 +133,7 @@ function M.prev_file()
 	end
 end
 
--- Jump to fist file in the same directory with current buffer, sorted by name. 
+-- Jump to fist file in the same directory with current buffer, sorted by name.
 function M.first_file()
 	local dir_path = get_dir_path()
 	local files = get_files(dir_path)
@@ -141,7 +143,7 @@ function M.first_file()
 	vim.cmd('edit ' .. target_path)
 end
 
--- Jump to last file in the same directory with current buffer, sorted by name. 
+-- Jump to last file in the same directory with current buffer, sorted by name.
 function M.last_file()
 	local dir_path = get_dir_path()
 	local files = get_files(dir_path)
@@ -202,7 +204,6 @@ function M.setup(config)
 	M.nap("<C-t>", "ptnext", "ptprevious", "Next tag in previous window", "Previous tag in previous window")
 
 	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
-
 end
 
 return M
