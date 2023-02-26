@@ -1,4 +1,4 @@
-*nap.txt*             For NVIM v0.8.0            Last change: 2023 February 25
+*nap.txt*             For NVIM v0.8.0            Last change: 2023 February 26
 
 ==============================================================================
 Table of Contents                                      *nap-table-of-contents*
@@ -41,13 +41,16 @@ OPERATORS                         *nap-nap.nvim-(next-and-previous)-operators*
   ----------- ---------------
   a, A        Tab
   b, B        Buffer
+  c           Change list
   d           Diagnostic
+  f           File
+  j           Jump list
   l, L, C-l   Location list
   q, Q, C-q   Quickfix
   s           Spell
   t, T, C-t   Tag
   z           Fold
-The following are not yet supported, feel free to suggest others: - [ ] Add
+The following are not yet supported, feel free to suggest others: - [x] Add
 File operator, similar to unimpaired. - [ ] Support count.
 
 
@@ -56,7 +59,7 @@ ADD NEW OPERATOR           *nap-nap.nvim-(next-and-previous)-add-new-operator*
 You can add/override operators or easily. For example:
 
 
-- With Gitsigns <https://github.com/lewis6991/gitsigns.nvim>, `require("nap").nap('c', "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")`
+- With Gitsigns <https://github.com/lewis6991/gitsigns.nvim>, `require("nap").nap('h', function()   require("gitsigns").next_hunk({ preview = true }) end, function() require("gitsigns").prev_hunk({       preview = true }) end, "Next diff", "Previous diff")`
 - With Aerial <https://github.com/stevearc/aerial.nvim>, `require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")`
 
 
