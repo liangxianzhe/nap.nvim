@@ -43,7 +43,7 @@ OPERATORS                         *nap-nap.nvim-(next-and-previous)-operators*
   b, B        Buffer
   c           Change list
   d           Diagnostic
-  f           File
+  f, F        File
   j           Jump list
   l, L, C-l   Location list
   q, Q, C-q   Quickfix
