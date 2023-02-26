@@ -86,7 +86,7 @@ function M.setup(config)
 	M.nap("b", "bnext", "bprevious", "Next buffer", "Previous buffer")
 	M.nap("B", "blast", "bfirst", "Last buffer", "First buffer")
 
-	M.nap("d", "lua vim.diagnostic.goto_next()", "lua vim.diagnostic.goto_prev()", "Next diagnostic", "Previous diagnostic")
+	M.nap("d", vim.diagnostic.goto_next, vim.diagnostic.goto_prev, "Next diagnostic", "Previous diagnostic")
 
 	M.nap("f", require('nap').next_file, require('nap').prev_file, "Next file", "Previous file")
 
