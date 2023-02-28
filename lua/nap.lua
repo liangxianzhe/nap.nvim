@@ -202,6 +202,8 @@ function M.setup(config)
 	M.nap("<C-l>", "lnfile", "lpfile", "Next item in different file in location list",
 		"Previous item in different file in location list")
 
+	M.nap("m", "normal! ]`", "normal [`", "Next lowercase mark", "Previous lowercase mark")
+
 	M.nap("q", "cnext", "cprevious", "Next item in quickfix list", "Previous item in quickfix list")
 	M.nap("Q", "clast", "cfirst", "Last item in quickfix list", "First item in quickfix list")
 	M.nap("<C-q>", "cnfile", "cpfile", "Next item in different file in quickfix list",

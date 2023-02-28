@@ -27,6 +27,7 @@ Use `b` (buffer) as an example:
 | f, F        | File          |
 | j           | Jump list     |
 | l, L, C-l   | Location list |
+| m           | Mark          |
 | q, Q, C-q   | Quickfix      |
 | s           | Spell         |
 | t, T, C-t   | Tag           |
