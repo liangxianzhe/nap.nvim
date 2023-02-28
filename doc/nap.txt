@@ -1,4 +1,4 @@
-*nap.txt*             For NVIM v0.8.0            Last change: 2023 February 26
+*nap.txt*             For NVIM v0.8.0            Last change: 2023 February 28
 
 ==============================================================================
 Table of Contents                                      *nap-table-of-contents*
@@ -46,6 +46,7 @@ OPERATORS                         *nap-nap.nvim-(next-and-previous)-operators*
   f, F        File
   j           Jump list
   l, L, C-l   Location list
+  m           Mark
   q, Q, C-q   Quickfix
   s           Spell
   t, T, C-t   Tag
