@@ -55,13 +55,17 @@ end
 ---@param prev string|function Command to jump next.
 ---@param next_desc string Description of jump next.
 ---@param prev_desc string Description of jump next.
-function M.nap(key, next, prev, next_desc, prev_desc)
+---@param modes table|nil Mode for the keybindings.
+function M.nap(key, next, prev, next_desc, prev_desc, modes)
 	local next_prefix = _config.next_prefix or '<c-n>'
 	local prev_prefix = _config.prev_prefix or '<c-p>'
 	local next_key = next_prefix .. key
 	local prev_key = prev_prefix .. key
-	vim.keymap.set("n", next_key, function() exec(next, prev, true) end, { desc = next_desc })
-	vim.keymap.set("n", prev_key, function() exec(next, prev, false) end, { desc = prev_desc })
+	modes = modes or { "n" }
+	for _, mode in pairs(modes) do
+		vim.keymap.set(mode, next_key, function() exec(next, prev, true) end, { desc = next_desc })
+		vim.keymap.set(mode, prev_key, function() exec(next, prev, false) end, { desc = prev_desc })
+	end
 end
 
 -- File operator.
@@ -170,8 +174,8 @@ function M.setup(config)
 	_config = config or {}
 	local next_repeat = _config.next_repeat or '<c-n>'
 	local prev_repeat = _config.prev_repeat or '<c-p>'
-	vim.keymap.set("n", next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
-	vim.keymap.set("n", prev_repeat, function() exec_last(false) end, { desc = "Repeat previous" })
+	vim.keymap.set({ "n", "v", "o" }, next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
+	vim.keymap.set({ "n", "v", "o" }, prev_repeat, function() exec_last(false) end, { desc = "Repeat previous" })
 
 	if next_repeat == '<cr>' or prev_repeat == '<cr>' then
 		-- If <cr> is used to repeat jump, it should still open the item in quickfix window
@@ -190,7 +194,8 @@ function M.setup(config)
 
 	M.nap("c", "normal! g,", "normal! g;", "Next change-list item", "Previous change-list item")
 
-	M.nap("d", vim.diagnostic.goto_next, vim.diagnostic.goto_prev, "Next diagnostic", "Previous diagnostic")
+	M.nap("d", vim.diagnostic.goto_next, vim.diagnostic.goto_prev, "Next diagnostic", "Previous diagnostic",
+		{ "n", "v", "o" })
 
 	M.nap("f", M.next_file, M.prev_file, "Next file", "Previous file")
 	M.nap("F", M.last_file, M.first_file, "Last file", "First file")
@@ -209,13 +214,13 @@ function M.setup(config)
 	M.nap("<C-q>", "cnfile", "cpfile", "Next item in different file in quickfix list",
 		"Previous item in different file in quickfix list")
 
-	M.nap("s", "normal! ]s", "normal! [s", "Next spell error", "Previous spell error")
+	M.nap("s", "normal! ]s", "normal! [s", "Next spell error", "Previous spell error", { "n", "v", "o" })
 
 	M.nap("t", "tnext", "tprevious", "Next tag", "Previous tag")
 	M.nap("T", "tlast", "tfirst", "Last tag", "First tag")
 	M.nap("<C-t>", "ptnext", "ptprevious", "Next tag in previous window", "Previous tag in previous window")
 
-	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold")
+	M.nap("z", "normal! zj", "normal! zk", "Next fold", "Previous fold", { "n", "v", "o" })
 end
 
 return M
