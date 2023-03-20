@@ -33,31 +33,157 @@ Use `b` (buffer) as an example:
 | t, T, C-t   | Tag           |
 | z           | Fold          |
 
-The following are not yet supported, feel free to suggest others:
-- [x] Add File operator, similar to unimpaired.
-- [ ] Support count.
+<details>
 
-## Add new operator
+<summary>
+Expand to see how they are defined.
+</summary>
 
-You can add/override operators or easily. For example: 
+```lua
+operators = {
+    ["a"] = {
+        next = { command = "tabnext", desc = "Next tab", },
+        prev = { command = "tabprevious", desc = "Prev tab", },
+    },
+    ["A"] = {
+        next = { command = "tablast", desc = "Last tab", },
+        prev = { command = "tabfirst", desc = "First tab", },
+    },
+    ["b"] = {
+        next = { command = "bnext", desc = "Next buffer", },
+        prev = { command = "bprevious", desc = "Prev buffer", },
+    },
+    ["B"] = {
+        next = { command = "blast", desc = "Last buffer", },
+        prev = { command = "bfirst", desc = "First buffer", },
+    },
+    ["c"] = {
+        next = { command = "normal! g,", desc = "Next change-list item", },
+        prev = { command = "normal! g;", desc = "Prev change-list item", }
+    },
+    ["d"] = {
+        next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
+        prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
+        modes = { "n", "v", "o" }
+    },
+    ["f"] = {
+        next = { command = M.next_file, desc = "Next file", },
+        prev = { command = M.prev_file, desc = "Prev file", },
+    },
+    ["F"] = {
+        next = { command = M.last_file, desc = "Last file", },
+        prev = { command = M.first_file, desc = "First file", },
+    },
+    ["j"] = {
+        next = { command = M.next_jump_list, desc = "Next jump-list item", },
+        prev = { command = M.prev_jump_list, desc = "Prev jump-list item" },
+    },
+    ["l"] = {
+        next = { command = "lnext", desc = "Next loclist item", },
+        prev = { command = "lprevious", desc = "Prev loclist item" },
+    },
+    ["L"] = {
+        next = { command = "llast", desc = "Last loclist item", },
+        prev = { command = "lfist", desc = "First loclist item" },
+    },
+    ["<C-l>"] = {
+        next = { command = "lnfile", desc = "Next loclist item in different file", },
+        prev = { command = "lpfile", desc = "Prev loclist item in different file" },
+    },
+    ["m"] = {
+        next = { command = "normal! ]`", desc = "Next lowercase mark", },
+        prev = { command = "normal [`", desc = "Prev lowercase mark" },
+    },
+    ["q"] = {
+        next = { command = "cnext", desc = "Next quickfix item", },
+        prev = { command = "cprevious", desc = "Prev quickfix item" },
+    },
+    ["Q"] = {
+        next = { command = "clast", desc = "Last quickfix item", },
+        prev = { command = "cfirst", desc = "First quickfix item" },
+    },
+    ["<C-q>"] = {
+        next = { command = "cnfile", desc = "Next quickfix item in different file", },
+        prev = { command = "cpfile", desc = "Prev quickfix item in different file" },
+    },
+    ["s"] = {
+        next = { command = "normal! ]s", desc = "Next spell error", },
+        prev = { command = "normal! [s", desc = "Prev spell error", },
+    },
+    ["t"] = {
+        next = { command = "tnext", desc = "Next tag", },
+        prev = { command = "tprevious", desc = "Prev tag" },
+    },
+    ["T"] = {
+        next = { command = "tlast", desc = "Last tag", },
+        prev = { command = "tfirst", desc = "First tag" },
+    },
+    ["<C-t>"] = {
+        next = { command = "ptnext", desc = "Next tag in previous window", },
+        prev = { command = "ptprevious", desc = "Prev tag in previous window" },
+    },
+    ["z"] = {
+        next = { command = "normal! zj", desc = "Next fold", },
+        prev = { command = "normal! zk", desc = "Prev fold", },
+        mode = { "n", "v", "o" },
+    },
+```
 
-* With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim), `require("nap").nap('h', function()
-  require("gitsigns").next_hunk({ preview = true }) end, function() require("gitsigns").prev_hunk({
-      preview = true }) end, "Next diff", "Previous diff")`
-* With [Aerial](https://github.com/stevearc/aerial.nvim), `require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")`
+</details>
+
+## Add new operator 
+
+You can add/override operators easily, for example:
+
+* With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
+```lua
+local gs = require("gitsigns")
+require("nap").operator('h',
+    {
+        next = { command = function() gs.next_hunk({ preview = true }) end, desc = "Next diff", },
+        prev = { command = function() gs.prev_hunk({ preview = true }) end, desc = "Prev diff", },
+        mode = { "n", "v", "o" },
+    })
+```
+* With [Aerial](https://github.com/stevearc/aerial.nvim)
+```lua
+require("nap").operator("o", {
+    next = { command = "AerialNext", desc = "Next outline symbol", },
+    prev = { command = "AerialPrev", desc = "Prev outline symbol", },
+    mode = { "n", "v", "o" },
+})
+```
+* With [vim-illuminate](https://github.com/RRethy/vim-illuminate)
+```lua
+require("nap").operator("r",
+    {
+        next = { command = require('illuminate').goto_next_reference, desc = "Next cursor word", },
+        prev = { command = require('illuminate').goto_prev_reference, desc = "Prev cursor word", },
+        mode = { "n", "x", "o" }
+    })
+```
+
+To remove a default operator:
+```lua
+require("nap").operator("a", false)
+```
+
+You can also add/remove operators inside setup call if you prefer to put them in a central place,
+see next section.
 
 ## Install and config
 
-Add `liangxianzhe/nap-nvim` to your plugin manager. 
+Add `liangxianzhe/nap-nvim` to your plugin manager. Call `require("nap").setup()` to use defaults:
 
-Add `require("nap").setup()` to use default keys. Or change these default keys:
-
-```
+```lua
 require("nap").setup({
     next_prefix = "<c-n>",
     prev_prefix = "<c-p>",
     next_repeat = "<c-n>",
     prev_repeat = "<c-p>",
+    operators = {
+        ...
+    },
 })
 ```
 
@@ -70,7 +196,8 @@ repeat jump, vim will need to wait
 `<c-n>` or `<c-n>b`.
 
 Personally I use the following setup so I can cycle through using `<Enter>` `<C-Enter>` much faster.
-```
+
+```lua
 require("nap").setup({
     next_prefix = "<space>", -- I use ; as leader so space is free
     prev_prefix = "<c-space>", -- Used much less 
@@ -90,6 +217,7 @@ feel free to try it out:
 * `]` and `[` (":help ]" to check default mappings)
 * `>` and `<` (":help >" to check default mappings)
 * Some `Alt` prefixed keys (Need terminal supports)
+
 
 ## Credits
 
