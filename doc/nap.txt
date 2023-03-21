@@ -13,6 +13,8 @@ Table of Contents                                      *nap-table-of-contents*
 ==============================================================================
 1. nap.nvim (next and previous)             *nap-nap.nvim-(next-and-previous)*
 
+中文 </README_cn.md>
+
 Quickly jump between next and previous NeoVim buffer, tab, file, quickfix,
 diagnostic, etc.
 
@@ -20,9 +22,9 @@ A lightweight plugin inspired by unimpaired.vim
 <https://github.com/tpope/vim-unimpaired>, but:
 
 
-- Focus on navigation, not editing or option toggling.
-- Jump back and forth easily with a single key, instead of two keys.
-- Written in Lua.
+- 🌱 Focus on navigation, not editing or option toggling.
+- 🚀 Jump back and forth easily with a single key, instead of two keys.
+- :rainbow: Written in Lua.
 
 
 TLDR                                   *nap-nap.nvim-(next-and-previous)-tldr*
@@ -106,7 +108,7 @@ Expand to see how they are defined. ~
         },
         ["m"] = {
             next = { command = "normal! ]`", desc = "Next lowercase mark", },
-            prev = { command = "normal [`", desc = "Prev lowercase mark" },
+            prev = { command = "normal! [`", desc = "Prev lowercase mark" },
         },
         ["q"] = {
             next = { command = "cnext", desc = "Next quickfix item", },
