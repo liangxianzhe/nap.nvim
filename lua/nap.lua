@@ -249,7 +249,7 @@ M.defaults = {
 		},
 		["m"] = {
 			next = { command = "normal! ]`", desc = "Next lowercase mark", },
-			prev = { command = "normal [`", desc = "Prev lowercase mark" },
+			prev = { command = "normal! [`", desc = "Prev lowercase mark" },
 		},
 		["q"] = {
 			next = { command = "cnext", desc = "Next quickfix item", },

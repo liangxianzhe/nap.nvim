@@ -1,26 +1,26 @@
-# nap.nvim (next and previous)
+# nap.nvim（上下）
 
-[中文](/README_cn.md)
+以下内容由ChatGPT翻译。
 
-Quickly jump between next and previous NeoVim buffer, tab, file, quickfix, diagnostic, etc.
+快速跳转到下一个和上一个NeoVim缓冲区，标签页，文件，快速修复，诊断等。
 
-A lightweight plugin inspired by [unimpaired.vim](https://github.com/tpope/vim-unimpaired), but:
+一个轻量级的插件，灵感来自于[unimpaired.vim](https://github.com/tpope/vim-unimpaired)，但是：
 
-* 🌱 Focus on navigation, not editing or option toggling.
-* 🚀 Jump back and forth easily with a single key, instead of two keys.
-* :rainbow: Written in Lua.
+*专注于导航，而不是编辑或选项切换。
+*使用单个键轻松前后跳转，而不是两个键。
+*用Lua编写。
 
 ## TLDR
 
-Use `b` (buffer) as an example:
+以“b”（缓冲区）为例：
 
-* `<c-n>b`/`<c-p>b` jump to next/previous buffer. Then just pressing
-`<c-n><c-n><c-n><c-p><c-p>...` to cycle through buffers.
-* `<c-n>B`/`<c-p>B` jump to last/first buffer. 
+* `<c-n>b` / `<c-p>b`跳转到下一个/上一个缓冲区。然后只需按下
+`<c-n><c-n><c-n><c-p><c-p>...` 循环浏览缓冲区。
+* `<c-n>B` / `<c-p>B`跳转到最后一个/第一个缓冲区。
 
-## Operators
+## 运算符
 
-| Operator    | Description   |
+| 运算符      | 描述          |
 | ----------- | -----------   |
 | a, A        | Tab           |
 | b, B        | Buffer        |
@@ -34,11 +34,10 @@ Use `b` (buffer) as an example:
 | s           | Spell         |
 | t, T, C-t   | Tag           |
 | z           | Fold          |
-
 <details>
 
 <summary>
-Expand to see how they are defined.
+展开以查看它们的定义。
 </summary>
 
 ```lua
@@ -66,7 +65,7 @@ operators = {
     ["d"] = {
         next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
         prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
-        mode = { "n", "v", "o" }
+        modes = { "n", "v", "o" }
     },
     ["f"] = {
         next = { command = M.next_file, desc = "Next file", },
@@ -94,7 +93,7 @@ operators = {
     },
     ["m"] = {
         next = { command = "normal! ]`", desc = "Next lowercase mark", },
-        prev = { command = "normal! [`", desc = "Prev lowercase mark" },
+        prev = { command = "normal [`", desc = "Prev lowercase mark" },
     },
     ["q"] = {
         next = { command = "cnext", desc = "Next quickfix item", },
@@ -133,11 +132,11 @@ operators = {
 
 </details>
 
-## Add new operator 
+## 添加新操作符
 
-You can add/override operators easily, for example:
+你可以轻松地添加/覆盖操作符，例如:
 
-* With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
+* [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
 ```lua
 local gs = require("gitsigns")
 require("nap").operator('h',
@@ -147,7 +146,7 @@ require("nap").operator('h',
         mode = { "n", "v", "o" },
     })
 ```
-* With [Aerial](https://github.com/stevearc/aerial.nvim)
+* [Aerial](https://github.com/stevearc/aerial.nvim)
 ```lua
 require("nap").operator("o", {
     next = { command = "AerialNext", desc = "Next outline symbol", },
@@ -155,7 +154,7 @@ require("nap").operator("o", {
     mode = { "n", "v", "o" },
 })
 ```
-* With [vim-illuminate](https://github.com/RRethy/vim-illuminate)
+* [vim-illuminate](https://github.com/RRethy/vim-illuminate)
 ```lua
 require("nap").operator("r",
     {
@@ -165,17 +164,16 @@ require("nap").operator("r",
     })
 ```
 
-To remove a default operator:
+删除默认运算符：
 ```lua
 require("nap").operator("a", false)
 ```
 
-You can also add/remove operators inside setup call if you prefer to put them in a central place,
-see next section.
+你也可以在`setup`中添加/删除运算符，如果你喜欢将它们放在一起，请参见下一节。
 
-## Install and config
+## 安装和配置
 
-Add `liangxianzhe/nap-nvim` to your plugin manager. Call `require("nap").setup()` to use defaults:
+将 `liangxianzhe/nap-nvim` 添加到您的插件管理器中。调用 `require("nap").setup()` 使用默认值：
 
 ```lua
 require("nap").setup({
@@ -189,15 +187,11 @@ require("nap").setup({
 })
 ```
 
-We need two pairs of keys: `prefix` keys to trigger the first jump, and `repeat` keys to repeat with
-a single press. `<c-n>` and `<c-p>` are chosen as defaults because most people don't map them.
+我们需要两组键：`prefix`键用于触发第一次跳转，`repeat`键用于以单击方式重复。选择`<c-n>`和`<c-p>`作为默认值，因为大多数人没有映射它们。
 
-However, setting `prefix` and `repeat` to the same key has one issue. When pressing `<c-n>` to
-repeat jump, vim will need to wait
-[timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
-`<c-n>` or `<c-n>b`.
+但是，将`prefix`和`repeat`设置为相同的键存在一个问题。当按下`<c-n>`以重复跳转时，vim将需要等待[timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen')以确定它是`<c-n>`还是`<c-n>b`。
 
-Personally I use the following setup so I can cycle through using `<Enter>` `<C-Enter>` much faster.
+我自己使用以下设置，以便我可以更快地通过`<Enter>` `<C-Enter>`进行循环。
 
 ```lua
 require("nap").setup({
@@ -208,19 +202,17 @@ require("nap").setup({
 })
 ```
 
-The best config for you depends on your leader key and your terminal. Here are a few examples,
-feel free to try it out:
+最适合您的配置取决于您的 Leader 键和终端。以下是一些示例，请尝试：
 
-* `<C-n>` and `<C-p>`
-* `<Enter>` and `<C-Enter>` (Some terminal doesn't support `C-Enter`)
-* `<Enter>` and `\` (If you remap leader key, the original leader key is near Enter)
-* `<Space>` and `<C-Space>`
-* `;` and `,` (use Leap/Flit or similar plugins to free these two keys)
-* `]` and `[` (":help ]" to check default mappings)
-* `>` and `<` (":help >" to check default mappings)
-* Some `Alt` prefixed keys (Need terminal supports)
+* `<C-n>` 和 `<C-p>`
+* `<Enter>` 和 `<C-Enter>`（某些终端不支持 `C-Enter`）
+* `<Enter>` 和 `\`（如果您重新映射 Leader 键，则原始 Leader 键靠近 Enter）
+* `<Space>` 和 `<C-Space>`
+* `;` 和 `,`（使用 Leap/Flit 或类似插件来释放这两个键）
+* `]` 和 `[`（“:help ]”以查看默认映射）
+* `>` 和 `<`（“:help >”以查看默认映射）
+* 一些以 `Alt` 为前缀的键（需要终端支持）
 
-
-## Credits
+## 感谢
 
 * [unimpaired.vim](https://github.com/tpope/vim-unimpaired)
