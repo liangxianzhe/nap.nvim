@@ -221,7 +221,7 @@ M.defaults = {
 		["d"] = {
 			next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
 			prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
-			modes = { "n", "v", "o" }
+			mode = { "n", "v", "o" }
 		},
 		["f"] = {
 			next = { command = M.next_file, desc = "Next file", },
