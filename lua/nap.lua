@@ -266,6 +266,7 @@ M.defaults = {
 		["s"] = {
 			next = { command = "normal! ]s", desc = "Next spell error", },
 			prev = { command = "normal! [s", desc = "Prev spell error", },
+			mode = { "n", "v", "o" },
 		},
 		["t"] = {
 			next = { command = "tnext", desc = "Next tag", },
