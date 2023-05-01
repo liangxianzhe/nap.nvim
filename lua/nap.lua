@@ -296,10 +296,14 @@ function M.setup(options)
   vim.keymap.set({ "n", "v", "o" }, M.options.prev_repeat, function() exec_last(false) end, { desc = "Repeat prev" })
 
   if M.options.next_repeat == '<cr>' or M.options.prev_repeat == '<cr>' then
-    -- If <cr> is used to repeat jump, it should still open the item in quickfix window
+    -- If <cr> is used to repeat jump, it should be disabled in quickfix or command window
     vim.api.nvim_create_autocmd(
       "FileType", {
       pattern = { "qf" },
+      command = [[nnoremap <buffer> <CR> <CR>]]
+    })
+    vim.api.nvim_create_autocmd(
+      "CmdwinEnter", {
       command = [[nnoremap <buffer> <CR> <CR>]]
     })
   end
