@@ -137,10 +137,9 @@ operators = {
 你可以轻松地添加/覆盖操作符，例如:
 ```lua
 require("nap").operator("h", {
-    next = { command = function() require("gitsigns").next_hunk({ preview = true }) end, desc = "Next diff", },
-    prev = { command = function() require("gitsigns").prev_hunk({ preview = true }) end, desc = "Prev diff", },
-    mode = { "n", "v", "o" },
-  }
+  next = { command = function() require("gitsigns").next_hunk({ preview = true }) end, desc = "Next diff", },
+  prev = { command = function() require("gitsigns").prev_hunk({ preview = true }) end, desc = "Prev diff", },
+  mode = { "n", "v", "o" },
 })
 ```
 
