@@ -307,4 +307,31 @@ function M.setup(options)
   for key, config in pairs(M.options.operators) do M.operator(key, config) end
 end
 
+-- Plugin integration helpers. Users could assign these to some operator manually.
+
+function M.gitsigns()
+  return
+  {
+    next = { command = function() require("gitsigns").next_hunk({ preview = true }) end, desc = "Next diff", },
+    prev = { command = function() require("gitsigns").prev_hunk({ preview = true }) end, desc = "Prev diff", },
+    mode = { "n", "v", "o" },
+  }
+end
+
+function M.aerial()
+  return {
+    next = { command = "AerialNext", desc = "Next outline symbol", },
+    prev = { command = "AerialPrev", desc = "Previous outline symbol", },
+    mode = { "n", "v", "o" },
+  }
+end
+
+function M.illuminate()
+  return {
+    next = { command = require('illuminate').goto_next_reference, desc = "Next cursor word", },
+    prev = { command = require('illuminate').goto_prev_reference, desc = "Prev cursor word", },
+    mode = { "n", "x", "o" }
+  }
+end
+
 return M

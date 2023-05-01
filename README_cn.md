@@ -135,33 +135,28 @@ operators = {
 ## 添加新操作符
 
 你可以轻松地添加/覆盖操作符，例如:
+```lua
+require("nap").operator("h", {
+    next = { command = function() require("gitsigns").next_hunk({ preview = true }) end, desc = "Next diff", },
+    prev = { command = function() require("gitsigns").prev_hunk({ preview = true }) end, desc = "Prev diff", },
+    mode = { "n", "v", "o" },
+  }
+})
+```
+
+以下一些插件还提供了帮助函数：
 
 * [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
 ```lua
-local gs = require("gitsigns")
-require("nap").operator('h',
-    {
-        next = { command = function() gs.next_hunk({ preview = true }) end, desc = "Next diff", },
-        prev = { command = function() gs.prev_hunk({ preview = true }) end, desc = "Prev diff", },
-        mode = { "n", "v", "o" },
-    })
+require("nap").operator('h', require("nap").gitsigns())
 ```
 * [Aerial](https://github.com/stevearc/aerial.nvim)
 ```lua
-require("nap").operator("o", {
-    next = { command = "AerialNext", desc = "Next outline symbol", },
-    prev = { command = "AerialPrev", desc = "Prev outline symbol", },
-    mode = { "n", "v", "o" },
-})
+require("nap").operator('o', require("nap").aerial())
 ```
 * [vim-illuminate](https://github.com/RRethy/vim-illuminate)
 ```lua
-require("nap").operator("r",
-    {
-        next = { command = require('illuminate').goto_next_reference, desc = "Next cursor word", },
-        prev = { command = require('illuminate').goto_prev_reference, desc = "Prev cursor word", },
-        mode = { "n", "x", "o" }
-    })
+require("nap").operator('r', require("nap").illuminate())
 ```
 
 删除默认运算符：
