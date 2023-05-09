@@ -1,4 +1,4 @@
-*nap.txt*               For NVIM v0.8.0               Last change: 2023 May 01
+*nap.txt*               For NVIM v0.8.0               Last change: 2023 May 09
 
 ==============================================================================
 Table of Contents                                      *nap-table-of-contents*
