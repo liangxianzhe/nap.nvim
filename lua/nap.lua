@@ -241,7 +241,7 @@ M.defaults = {
     },
     ["L"] = {
       next = { command = "llast", desc = "Last loclist item", },
-      prev = { command = "lfist", desc = "First loclist item" },
+      prev = { command = "lfirst", desc = "First loclist item" },
     },
     ["<C-l>"] = {
       next = { command = "lnfile", desc = "Next loclist item in different file", },
