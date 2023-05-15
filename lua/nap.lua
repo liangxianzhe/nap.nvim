@@ -247,6 +247,10 @@ M.defaults = {
       next = { command = "lnfile", desc = "Next loclist item in different file", },
       prev = { command = "lpfile", desc = "Prev loclist item in different file" },
     },
+    ["<M-l>"] = {
+      next = { command = "lnewer", desc = "Next loclist list", },
+      prev = { command = "lolder", desc = "Prev loclist list" },
+    },
     ["m"] = {
       next = { command = "normal! ]`", desc = "Next lowercase mark", },
       prev = { command = "normal! [`", desc = "Prev lowercase mark" },
@@ -262,6 +266,10 @@ M.defaults = {
     ["<C-q>"] = {
       next = { command = "cnfile", desc = "Next quickfix item in different file", },
       prev = { command = "cpfile", desc = "Prev quickfix item in different file" },
+    },
+    ["<M-q>"] = {
+      next = { command = "cnewer", desc = "Next quickfix list", },
+      prev = { command = "colder", desc = "Prev quickfix list" },
     },
     ["s"] = {
       next = { command = "normal! ]s", desc = "Next spell error", },
