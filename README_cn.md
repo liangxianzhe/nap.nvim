@@ -185,14 +185,14 @@ require("nap").setup({
 
 但是，将`prefix`和`repeat`设置为相同的键存在一个问题。当按下`<c-n>`以重复跳转时，vim将需要等待[timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen')以确定它是`<c-n>`还是`<c-n>b`。
 
-我自己使用以下设置，以便我可以更快地通过`<Enter>` `<C-Enter>`进行循环。
+我自己使用以下设置，以便我可以更快地进行循环。
 
 ```lua
 require("nap").setup({
     next_prefix = "<space>", -- I use ; as leader so space is free
     prev_prefix = "<c-space>", -- Used much less 
-    next_repeat = "<cr>", -- Enter is easy to press
-    prev_repeat = "<c-cr>", -- C-Enter is easy too
+    next_repeat = "<c-n>",
+    prev_repeat = "<c-p>",
 })
 ```
 

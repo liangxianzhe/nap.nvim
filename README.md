@@ -191,14 +191,14 @@ repeat jump, vim will need to wait
 [timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
 `<c-n>` or `<c-n>b`.
 
-Personally I use the following setup so I can cycle through using `<Enter>` `<C-Enter>` much faster.
+Personally I use the following setup so I can cycle through much faster.
 
 ```lua
 require("nap").setup({
     next_prefix = "<space>", -- I use ; as leader so space is free
     prev_prefix = "<c-space>", -- Used much less 
-    next_repeat = "<cr>", -- Enter is easy to press
-    prev_repeat = "<c-cr>", -- C-Enter is easy too
+    next_repeat = "<c-n>",
+    prev_repeat = "<c-p>",
 })
 ```
 
