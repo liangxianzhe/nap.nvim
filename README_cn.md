@@ -147,6 +147,7 @@ require("nap").operator("h", {
 
 * [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
 ```lua
+-- The provided implementation takes care of some edge cases, such as falling back to ]c [c in diff mode.
 require("nap").operator('h', require("nap").gitsigns())
 ```
 * [Aerial](https://github.com/stevearc/aerial.nvim)
