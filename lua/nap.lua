@@ -314,10 +314,31 @@ end
 -- Plugin integration helpers. Users could assign these to some operator manually.
 
 function M.gitsigns()
-  return
-  {
-    next = { command = function() require("gitsigns").next_hunk({ preview = true }) end, desc = "Next diff", },
-    prev = { command = function() require("gitsigns").prev_hunk({ preview = true }) end, desc = "Prev diff", },
+  -- Whether we are in a diff mode where "]c" "[c" will likely work better for hunks.
+  local function in_diff_mode()
+    return vim.wo.diff or vim.wo.scrollbind or vim.bo.filetype == "fugitive" or vim.bo.filetype == "git"
+  end
+  return {
+    next = {
+      command = function()
+        if in_diff_mode() then
+          vim.cmd("normal ]c")
+        else
+          require("gitsigns").next_hunk({ preview = true })
+        end
+      end,
+      desc = "Next diff",
+    },
+    prev = {
+      command = function()
+        if in_diff_mode() then
+          vim.cmd("normal [c")
+        else
+          require("gitsigns").prev_hunk({ preview = true })
+        end
+      end,
+      desc = "Prev diff",
+    },
     mode = { "n", "v", "o" },
   }
 end
