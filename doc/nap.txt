@@ -1,4 +1,4 @@
-*nap.txt*               For NVIM v0.8.0               Last change: 2023 May 09
+*nap.txt*               For NVIM v0.8.0               Last change: 2023 May 15
 
 ==============================================================================
 Table of Contents                                      *nap-table-of-contents*
@@ -21,7 +21,6 @@ diagnostic, etc.
 A lightweight plugin inspired by unimpaired.vim
 <https://github.com/tpope/vim-unimpaired>, but:
 
-
 - 🌱 Focus on navigation, not editing or option toggling.
 - 🚀 Jump back and forth easily with a single key, instead of two keys.
 - :rainbow: Written in Lua.
@@ -30,7 +29,6 @@ A lightweight plugin inspired by unimpaired.vim
 TLDR                                   *nap-nap.nvim-(next-and-previous)-tldr*
 
 Use `b` (buffer) as an example:
-
 
 - `<c-n>b`/`<c-p>b` jump to next/previous buffer. Then just pressing
     `<c-n><c-n><c-n><c-p><c-p>...` to cycle through buffers.
@@ -160,20 +158,17 @@ You can add/override operators easily, for example:
 
 Helper functions are provided for the following plugins to save your time:
 
-
 - With Gitsigns <https://github.com/lewis6991/gitsigns.nvim>
 
 >lua
     require("nap").operator('h', require("nap").gitsigns())
 <
 
-
 - With Aerial <https://github.com/stevearc/aerial.nvim>
 
 >lua
     require("nap").operator('o', require("nap").aerial())
 <
-
 
 - With vim-illuminate <https://github.com/RRethy/vim-illuminate>
 
@@ -216,21 +211,19 @@ However, setting `prefix` and `repeat` to the same key has one issue. When
 pressing `<c-n>` to repeat jump, vim will need to wait |timeoutlen| to
 determine whether its is `<c-n>` or `<c-n>b`.
 
-Personally I use the following setup so I can cycle through using `<Enter>`
-`<C-Enter>` much faster.
+Personally I use the following setup so I can cycle through much faster.
 
 >lua
     require("nap").setup({
         next_prefix = "<space>", -- I use ; as leader so space is free
         prev_prefix = "<c-space>", -- Used much less 
-        next_repeat = "<cr>", -- Enter is easy to press
-        prev_repeat = "<c-cr>", -- C-Enter is easy too
+        next_repeat = "<c-n>",
+        prev_repeat = "<c-p>",
     })
 <
 
 The best config for you depends on your leader key and your terminal. Here are
 a few examples, feel free to try it out:
-
 
 - `<C-n>` and `<C-p>`
 - `<Enter>` and `<C-Enter>` (Some terminal doesn’t support `C-Enter`)
@@ -243,7 +236,6 @@ a few examples, feel free to try it out:
 
 
 CREDITS                             *nap-nap.nvim-(next-and-previous)-credits*
-
 
 - unimpaired.vim <https://github.com/tpope/vim-unimpaired>
 
