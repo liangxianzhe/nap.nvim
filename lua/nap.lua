@@ -324,7 +324,7 @@ end
 function M.gitsigns()
   -- Whether we are in a diff mode where "]c" "[c" will likely work better for hunks.
   local function in_diff_mode()
-    return vim.wo.diff or vim.wo.scrollbind or vim.bo.filetype == "fugitive" or vim.bo.filetype == "git"
+    return vim.wo.diff or vim.bo.filetype == "fugitive" or vim.bo.filetype == "git"
   end
   return {
     next = {
