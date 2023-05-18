@@ -179,11 +179,11 @@ end
 -- Jump list
 
 function M.next_jump_list()
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, false, true), "t", true)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-o>", true, false, true), "t", true)
 end
 
 function M.prev_jump_list()
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-o>", true, false, true), "t", true)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, false, true), "t", true)
 end
 
 -- Setup.
@@ -214,14 +214,14 @@ M.defaults = {
       next = { command = "blast", desc = "Last buffer", },
       prev = { command = "bfirst", desc = "First buffer", },
     },
-    ["c"] = {
-      next = { command = "normal! g,", desc = "Next change-list item", },
-      prev = { command = "normal! g;", desc = "Prev change-list item", }
-    },
     ["d"] = {
       next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
       prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
       mode = { "n", "v", "o" }
+    },
+    ["e"] = {
+      next = { command = "normal! g;", desc = "Older edit (change-list) item", },
+      prev = { command = "normal! g,", desc = "Newer edit (change-list) item", }
     },
     ["f"] = {
       next = { command = M.next_file, desc = "Next file", },
@@ -232,8 +232,8 @@ M.defaults = {
       prev = { command = M.first_file, desc = "First file", },
     },
     ["j"] = {
-      next = { command = M.next_jump_list, desc = "Next jump-list item", },
-      prev = { command = M.prev_jump_list, desc = "Prev jump-list item" },
+      next = { command = M.next_jump_list, desc = "Older jump-list item", },
+      prev = { command = M.prev_jump_list, desc = "Newer jump-list item" },
     },
     ["l"] = {
       next = { command = "lnext", desc = "Next loclist item", },

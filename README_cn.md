@@ -20,20 +20,20 @@
 
 ## 运算符
 
-| 运算符      | 描述          |
-| ----------- | -----------   |
-| a, A             | Tab           |
-| b, B             | Buffer        |
-| c                | Change list   |
-| d                | Diagnostic    |
-| f, F             | File          |
-| j                | Jump list     |
-| l, L, C-l, M-l   | Location list |
-| q, Q, C-q, M-q   | Quickfix      |
-| s                | Spell         |
-| t, T, C-t        | Tag           |
-| z                | Fold          |
-| '                | Mark          |
+| 运算符           | 描述               |
+| ---------------- | ------------------ |
+| a, A             | Tab                |
+| b, B             | Buffer             |
+| d                | Diagnostic         |
+| e                | Edit (Change list) |
+| f, F             | File               |
+| j                | Jump list          |
+| l, L, C-l, M-l   | Location list      |
+| q, Q, C-q, M-q   | Quickfix           |
+| s                | Spell              |
+| t, T, C-t        | Tag                |
+| z                | Fold               |
+| '                | Mark               |
 
 <details>
 
@@ -59,14 +59,14 @@ operators = {
         next = { command = "blast", desc = "Last buffer", },
         prev = { command = "bfirst", desc = "First buffer", },
     },
-    ["c"] = {
-        next = { command = "normal! g,", desc = "Next change-list item", },
-        prev = { command = "normal! g;", desc = "Prev change-list item", }
-    },
     ["d"] = {
         next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
         prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
         mode = { "n", "v", "o" }
+    },
+    ["e"] = {
+        next = { command = "normal! g;", desc = "Older edit (change-list) item", },
+        prev = { command = "normal! g,", desc = "Newer edit (change-list) item", }
     },
     ["f"] = {
         next = { command = M.next_file, desc = "Next file", },
@@ -77,8 +77,8 @@ operators = {
         prev = { command = M.first_file, desc = "First file", },
     },
     ["j"] = {
-        next = { command = M.next_jump_list, desc = "Next jump-list item", },
-        prev = { command = M.prev_jump_list, desc = "Prev jump-list item" },
+        next = { command = M.next_jump_list, desc = "Older jump-list item", },
+        prev = { command = M.prev_jump_list, desc = "Newer jump-list item" },
     },
     ["l"] = {
         next = { command = "lnext", desc = "Next loclist item", },
