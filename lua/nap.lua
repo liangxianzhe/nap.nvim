@@ -251,10 +251,6 @@ M.defaults = {
       next = { command = "lnewer", desc = "Next loclist list", },
       prev = { command = "lolder", desc = "Prev loclist list" },
     },
-    ["m"] = {
-      next = { command = "normal! ]`", desc = "Next lowercase mark", },
-      prev = { command = "normal! [`", desc = "Prev lowercase mark" },
-    },
     ["q"] = {
       next = { command = "cnext", desc = "Next quickfix item", },
       prev = { command = "cprevious", desc = "Prev quickfix item" },
@@ -292,6 +288,10 @@ M.defaults = {
       next = { command = "normal! zj", desc = "Next fold", },
       prev = { command = "normal! zk", desc = "Prev fold", },
       mode = { "n", "v", "o" },
+    },
+    ["'"] = {
+      next = { command = "normal! ]`", desc = "Next lowercase mark", },
+      prev = { command = "normal! [`", desc = "Prev lowercase mark" },
     },
   }
 }

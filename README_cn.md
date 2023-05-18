@@ -29,11 +29,11 @@
 | f, F             | File          |
 | j                | Jump list     |
 | l, L, C-l, M-l   | Location list |
-| m                | Mark          |
 | q, Q, C-q, M-q   | Quickfix      |
 | s                | Spell         |
 | t, T, C-t        | Tag           |
 | z                | Fold          |
+| '                | Mark          |
 
 <details>
 
@@ -96,10 +96,6 @@ operators = {
       next = { command = "lnewer", desc = "Next loclist list", },
       prev = { command = "lolder", desc = "Prev loclist list" },
     },
-    ["m"] = {
-        next = { command = "normal! ]`", desc = "Next lowercase mark", },
-        prev = { command = "normal! [`", desc = "Prev lowercase mark" },
-    },
     ["q"] = {
         next = { command = "cnext", desc = "Next quickfix item", },
         prev = { command = "cprevious", desc = "Prev quickfix item" },
@@ -136,6 +132,10 @@ operators = {
         next = { command = "normal! zj", desc = "Next fold", },
         prev = { command = "normal! zk", desc = "Prev fold", },
         mode = { "n", "v", "o" },
+    },
+    ["'"] = {
+        next = { command = "normal! ]`", desc = "Next lowercase mark", },
+        prev = { command = "normal! [`", desc = "Prev lowercase mark" },
     },
 ```
 
