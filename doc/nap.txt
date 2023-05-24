@@ -1,4 +1,4 @@
-*nap.txt*               For NVIM v0.8.0               Last change: 2023 May 16
+*nap.txt*               For NVIM v0.8.0               Last change: 2023 May 24
 
 ==============================================================================
 Table of Contents                                      *nap-table-of-contents*
@@ -38,19 +38,19 @@ Use `b` (buffer) as an example:
 OPERATORS                         *nap-nap.nvim-(next-and-previous)-operators*
 
   Operator         Description
-  ---------------- ---------------
+  ---------------- --------------------
   a, A             Tab
   b, B             Buffer
-  c                Change list
   d                Diagnostic
+  e                Edit (Change list)
   f, F             File
   j                Jump list
   l, L, C-l, M-l   Location list
-  m                Mark
   q, Q, C-q, M-q   Quickfix
   s                Spell
   t, T, C-t        Tag
   z                Fold
+  ’                Mark
 Expand to see how they are defined. ~
 
 >lua
@@ -71,14 +71,14 @@ Expand to see how they are defined. ~
             next = { command = "blast", desc = "Last buffer", },
             prev = { command = "bfirst", desc = "First buffer", },
         },
-        ["c"] = {
-            next = { command = "normal! g,", desc = "Next change-list item", },
-            prev = { command = "normal! g;", desc = "Prev change-list item", }
-        },
         ["d"] = {
             next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
             prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
             mode = { "n", "v", "o" }
+        },
+        ["e"] = {
+            next = { command = "normal! g;", desc = "Older edit (change-list) item", },
+            prev = { command = "normal! g,", desc = "Newer edit (change-list) item", }
         },
         ["f"] = {
             next = { command = M.next_file, desc = "Next file", },
@@ -89,8 +89,8 @@ Expand to see how they are defined. ~
             prev = { command = M.first_file, desc = "First file", },
         },
         ["j"] = {
-            next = { command = M.next_jump_list, desc = "Next jump-list item", },
-            prev = { command = M.prev_jump_list, desc = "Prev jump-list item" },
+            next = { command = M.next_jump_list, desc = "Older jump-list item", },
+            prev = { command = M.prev_jump_list, desc = "Newer jump-list item" },
         },
         ["l"] = {
             next = { command = "lnext", desc = "Next loclist item", },
@@ -107,10 +107,6 @@ Expand to see how they are defined. ~
         ["<M-l>"] = {
           next = { command = "lnewer", desc = "Next loclist list", },
           prev = { command = "lolder", desc = "Prev loclist list" },
-        },
-        ["m"] = {
-            next = { command = "normal! ]`", desc = "Next lowercase mark", },
-            prev = { command = "normal! [`", desc = "Prev lowercase mark" },
         },
         ["q"] = {
             next = { command = "cnext", desc = "Next quickfix item", },
@@ -148,6 +144,10 @@ Expand to see how they are defined. ~
             next = { command = "normal! zj", desc = "Next fold", },
             prev = { command = "normal! zk", desc = "Prev fold", },
             mode = { "n", "v", "o" },
+        },
+        ["'"] = {
+            next = { command = "normal! ]`", desc = "Next lowercase mark", },
+            prev = { command = "normal! [`", desc = "Prev lowercase mark" },
         },
 <
 
