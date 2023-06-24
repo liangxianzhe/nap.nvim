@@ -1,7 +1,5 @@
 # nap.nvim (next and previous)
 
-[中文](/README_cn.md)
-
 Quickly jump between next and previous NeoVim buffer, tab, file, quickfix, diagnostic, etc.
 
 A lightweight plugin inspired by [unimpaired.vim](https://github.com/tpope/vim-unimpaired), but:
