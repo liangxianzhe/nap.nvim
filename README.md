@@ -6,15 +6,14 @@ A lightweight plugin inspired by [unimpaired.vim](https://github.com/tpope/vim-u
 
 * 🌱 Focus on navigation, not editing or option toggling.
 * 🚀 Jump back and forth easily with a single key, instead of two keys.
-* :rainbow: Written in Lua.
 
 ## TLDR
 
 Use `b` (buffer) as an example:
 
-* `<c-n>b`/`<c-p>b` jump to next/previous buffer. Then just pressing
-`<c-n><c-n><c-n><c-p><c-p>...` to cycle through buffers.
-* `<c-n>B`/`<c-p>B` jump to last/first buffer. 
+* `]b`/`[b` jump to next/previous buffer. Then just pressing `<c-n><c-n><c-n><c-p><c-p>...` to cycle
+  through buffers.
+* `]B`/`[B` jump to last/first buffer. 
 
 ## Operators
 
@@ -25,7 +24,6 @@ Use `b` (buffer) as an example:
 | d                | Diagnostic         |
 | e                | Edit (Change list) |
 | f, F             | File               |
-| j                | Jump list          |
 | l, L, C-l, M-l   | Location list      |
 | q, Q, C-q, M-q   | Quickfix           |
 | s                | Spell              |
@@ -42,98 +40,95 @@ Expand to see how they are defined.
 ```lua
 operators = {
     ["a"] = {
-        next = { command = "tabnext", desc = "Next tab", },
-        prev = { command = "tabprevious", desc = "Prev tab", },
+      next = { rhs = "<cmd>tabnext<cr>", opts = { desc = "Next tab" } },
+      prev = { rhs = "<cmd>tabprevious<cr>", opts = { desc = "Prev tab" } },
     },
     ["A"] = {
-        next = { command = "tablast", desc = "Last tab", },
-        prev = { command = "tabfirst", desc = "First tab", },
+      next = { rhs = "<cmd>tablast<cr>", opts = { desc = "Last tab" } },
+      prev = { rhs = "<cmd>tabfirst<cr>", opts = { desc = "First tab" } },
     },
     ["b"] = {
-        next = { command = "bnext", desc = "Next buffer", },
-        prev = { command = "bprevious", desc = "Prev buffer", },
+      next = { rhs = "<cmd>bnext<cr>", opts = { desc = "Next buffer" } },
+      prev = { rhs = "<cmd>bprevious<cr>", opts = { desc = "Prev buffer" } },
     },
     ["B"] = {
-        next = { command = "blast", desc = "Last buffer", },
-        prev = { command = "bfirst", desc = "First buffer", },
+      next = { rhs = "<cmd>blast<cr>", opts = { desc = "Last buffer" } },
+      prev = { rhs = "<cmd>bfirst<cr>", opts = { desc = "First buffer" } },
     },
     ["d"] = {
-        next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
-        prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
-        mode = { "n", "v", "o" }
+      next = { rhs = vim.diagnostic.goto_next, opts = { desc = "Next diagnostic" } },
+      prev = { rhs = vim.diagnostic.goto_prev, opts = { desc = "Prev diagnostic" } },
+      mode = { "n", "v", "o" }
     },
     ["e"] = {
-        next = { command = "normal! g;", desc = "Older edit (change-list) item", },
-        prev = { command = "normal! g,", desc = "Newer edit (change-list) item", }
+      next = { rhs = "g;", opts = { desc = "Older edit (change-list) item" } },
+      prev = { rhs = "g,", opts = { desc = "Newer edit (change-list) item" } }
     },
     ["f"] = {
-        next = { command = M.next_file, desc = "Next file", },
-        prev = { command = M.prev_file, desc = "Prev file", },
+      next = { rhs = M.next_file, opts = { desc = "Next file" } },
+      prev = { rhs = M.prev_file, opts = { desc = "Prev file" } },
     },
     ["F"] = {
-        next = { command = M.last_file, desc = "Last file", },
-        prev = { command = M.first_file, desc = "First file", },
-    },
-    ["j"] = {
-        next = { command = M.next_jump_list, desc = "Older jump-list item", },
-        prev = { command = M.prev_jump_list, desc = "Newer jump-list item" },
+      next = { rhs = M.last_file, opts = { desc = "Last file" } },
+      prev = { rhs = M.first_file, opts = { desc = "First file" } },
     },
     ["l"] = {
-        next = { command = "lnext", desc = "Next loclist item", },
-        prev = { command = "lprevious", desc = "Prev loclist item" },
+      next = { rhs = "<cmd>lnext<cr>", opts = { desc = "Next loclist item" } },
+      prev = { rhs = "<cmd>lprevious<cr>", opts = { desc = "Prev loclist item" } }
     },
     ["L"] = {
-        next = { command = "llast", desc = "Last loclist item", },
-        prev = { command = "lfirst", desc = "First loclist item" },
+      next = { rhs = "<cmd>llast<cr>", opts = { desc = "Last loclist item" } },
+      prev = { rhs = "<cmd>lfirst<cr>", opts = { desc = "First loclist item" } }
     },
     ["<C-l>"] = {
-        next = { command = "lnfile", desc = "Next loclist item in different file", },
-        prev = { command = "lpfile", desc = "Prev loclist item in different file" },
+      next = { rhs = "<cmd>lnfile<cr>", opts = { desc = "Next loclist item in different file" } },
+      prev = { rhs = "<cmd>lpfile<cr>", opts = { desc = "Prev loclist item in different file" } }
     },
     ["<M-l>"] = {
-      next = { command = "lnewer", desc = "Next loclist list", },
-      prev = { command = "lolder", desc = "Prev loclist list" },
+      next = { rhs = "<cmd>lnewer<cr>", opts = { desc = "Next loclist list" } },
+      prev = { rhs = "<cmd>lolder<cr>", opts = { desc = "Prev loclist list" } }
     },
     ["q"] = {
-        next = { command = "cnext", desc = "Next quickfix item", },
-        prev = { command = "cprevious", desc = "Prev quickfix item" },
+      next = { rhs = "<cmd>cnext<cr>", opts = { desc = "Next quickfix item" } },
+      prev = { rhs = "<cmd>cprevious<cr>", opts = { desc = "Prev quickfix item" } }
     },
     ["Q"] = {
-        next = { command = "clast", desc = "Last quickfix item", },
-        prev = { command = "cfirst", desc = "First quickfix item" },
+      next = { rhs = "<cmd>clast<cr>", opts = { desc = "Last quickfix item" } },
+      prev = { rhs = "<cmd>cfirst<cr>", opts = { desc = "First quickfix item" } }
     },
     ["<C-q>"] = {
-        next = { command = "cnfile", desc = "Next quickfix item in different file", },
-        prev = { command = "cpfile", desc = "Prev quickfix item in different file" },
+      next = { rhs = "<cmd>cnfile<cr>", opts = { desc = "Next quickfix item in different file" } },
+      prev = { rhs = "<cmd>cpfile<cr>", opts = { desc = "Prev quickfix item in different file" } }
     },
     ["<M-q>"] = {
-      next = { command = "cnewer", desc = "Next quickfix list", },
-      prev = { command = "colder", desc = "Prev quickfix list" },
+      next = { rhs = "<cmd>cnewer<cr>", opts = { desc = "Next quickfix list" } },
+      prev = { rhs = "<cmd>colder<cr>", opts = { desc = "Prev quickfix list" } }
     },
     ["s"] = {
-        next = { command = "normal! ]s", desc = "Next spell error", },
-        prev = { command = "normal! [s", desc = "Prev spell error", },
+      next = { rhs = "]s", opts = { desc = "Next spell error" } },
+      prev = { rhs = "[s", opts = { desc = "Prev spell error" } },
+      mode = { "n", "v", "o" },
     },
     ["t"] = {
-        next = { command = "tnext", desc = "Next tag", },
-        prev = { command = "tprevious", desc = "Prev tag" },
+      next = { rhs = "<cmd>tnext<cr>", opts = { desc = "Next tag" } },
+      prev = { rhs = "<cmd>tprevious<cr>", opts = { desc = "Prev tag" } }
     },
     ["T"] = {
-        next = { command = "tlast", desc = "Last tag", },
-        prev = { command = "tfirst", desc = "First tag" },
+      next = { rhs = "<cmd>tlast<cr>", opts = { desc = "Last tag" } },
+      prev = { rhs = "<cmd>tfirst<cr>", opts = { desc = "First tag" } }
     },
     ["<C-t>"] = {
-        next = { command = "ptnext", desc = "Next tag in previous window", },
-        prev = { command = "ptprevious", desc = "Prev tag in previous window" },
+      next = { rhs = "<cmd>ptnext<cr>", opts = { desc = "Next tag in previous window" } },
+      prev = { rhs = "<cmd>ptprevious<cr>", opts = { desc = "Prev tag in previous window" } }
     },
     ["z"] = {
-        next = { command = "normal! zj", desc = "Next fold", },
-        prev = { command = "normal! zk", desc = "Prev fold", },
-        mode = { "n", "v", "o" },
+      next = { rhs = "zj", opts = { desc = "Next fold" } },
+      prev = { rhs = "zk", opts = { desc = "Prev fold" } },
+      mode = { "n", "v", "o" },
     },
     ["'"] = {
-        next = { command = "normal! ]`", desc = "Next lowercase mark", },
-        prev = { command = "normal! [`", desc = "Prev lowercase mark" },
+      next = { rhs = "]`", opts = { desc = "Next lowercase mark" } },
+      prev = { rhs = "[`", opts = { desc = "Prev lowercase mark" } }
     },
 ```
 
@@ -143,32 +138,36 @@ operators = {
 
 You can add/override operators easily, for example:
 ```lua
-require("nap").operator("h", {
-  next = { command = function() require("gitsigns").next_hunk({ preview = true }) end, desc = "Next diff", },
-  prev = { command = function() require("gitsigns").prev_hunk({ preview = true }) end, desc = "Prev diff", },
+require("nap").map("o", {
+  next = { rhs = "<cmd>AerialNext<cr>", opts = { desc = "Next outline symbol" } },
+  prev = { rhs = "<cmd>AerialPrev<cr>", opts = { desc = "Prev outline symbol" } },
   mode = { "n", "v", "o" },
 })
 ```
+Under hood, this plugin calls `vim.keymap.set` to define two keybindings for you, see its doc about
+`rhs` and `opts`.
+
+## Helper functions
 
 Helper functions are provided for the following plugins to save your time:
 
 * With [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
 ```lua
--- The provided implementation takes care of some edge cases, such as falling back to ]c [c in diff mode.
-require("nap").operator('h', require("nap").gitsigns())
+-- The provided implementation falls back to ]c [c in diff mode.
+require("nap").map('c', require("nap").gitsigns())
 ```
 * With [Aerial](https://github.com/stevearc/aerial.nvim)
 ```lua
-require("nap").operator('o', require("nap").aerial())
+require("nap").map('o', require("nap").aerial())
 ```
 * With [vim-illuminate](https://github.com/RRethy/vim-illuminate)
 ```lua
-require("nap").operator('r', require("nap").illuminate())
+require("nap").map('r', require("nap").illuminate())
 ```
 
 To remove a default operator:
 ```lua
-require("nap").operator("a", false)
+require("nap").map("a", false)
 ```
 
 You can also add/remove operators inside setup call if you prefer to put them in a central place,
@@ -180,8 +179,8 @@ Add `liangxianzhe/nap-nvim` to your plugin manager. Call `require("nap").setup()
 
 ```lua
 require("nap").setup({
-    next_prefix = "<c-n>",
-    prev_prefix = "<c-p>",
+    next_prefix = "]",
+    prev_prefix = "[",
     next_repeat = "<c-n>",
     prev_repeat = "<c-p>",
     operators = {
@@ -191,36 +190,23 @@ require("nap").setup({
 ```
 
 We need two pairs of keys: `prefix` keys to trigger the first jump, and `repeat` keys to repeat with
-a single press. `<c-n>` and `<c-p>` are chosen as defaults because most people don't map them.
+a single press.
 
-However, setting `prefix` and `repeat` to the same key has one issue. When pressing `<c-n>` to
-repeat jump, vim will need to wait
-[timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is
-`<c-n>` or `<c-n>b`.
+The best config for you depends on many factors. Here are a few examples, feel free to try it out:
 
-Personally I use the following setup so I can cycle through much faster.
-
-```lua
-require("nap").setup({
-    next_prefix = "<space>", -- I use ; as leader so space is free
-    prev_prefix = "<c-space>", -- Used much less 
-    next_repeat = "<c-n>",
-    prev_repeat = "<c-p>",
-})
-```
-
-The best config for you depends on your leader key and your terminal. Here are a few examples,
-feel free to try it out:
-
+* `]` and `[` (":help ]" to check default mappings)
 * `<C-n>` and `<C-p>`
 * `<Enter>` and `<C-Enter>` (Some terminal doesn't support `C-Enter`)
 * `<Enter>` and `\` (If you remap leader key, the original leader key is near Enter)
 * `<Space>` and `<C-Space>`
-* `;` and `,` (use Leap/Flit or similar plugins to free these two keys)
-* `]` and `[` (":help ]" to check default mappings)
+* `;` and `,` (use flash.nvim, flit.nvim or similar plugins to free these two keys)
 * `>` and `<` (":help >" to check default mappings)
 * Some `Alt` prefixed keys (Need terminal supports)
 
+Technically you can set `prefix` and `repeat` to the same key (e.g. `]`). It has one issue that when
+pressing `]` to repeat jump, vim will need to wait
+[timeoutlen](https://neovim.io/doc/user/options.html#'timeoutlen') to determine whether its is `]`
+or `]b`.
 
 ## Credits
 

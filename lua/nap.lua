@@ -1,90 +1,76 @@
 local M = {}
 
-
 -- Command execution.
 
--- Record the last navigation operation.
-local _next = nil
-local _prev = nil
-
--- Catch and print the error when executing the command.
----@param command string|function Command to execute.
-local call = function(command)
-  local ok, result
-  if type(command) == "string" then
-    ok, result = pcall(vim.cmd, command)
-  else
-    ok, result = pcall(command)
-  end
-  if not ok then
-    vim.notify(string.format(result), vim.log.levels.WARN, { title = "nap.nvim" })
-  end
-end
-
--- Execute either next or prev command based on parameter norp (next_or_prev).
----@param next string|function Command to jump next.
----@param prev string|function Command to jump prev.
----@param norp boolean Next or prev.
-local exec = function(next, prev, norp)
-  -- Save both command so that we can jump forth and back.
-  _next = next
-  _prev = prev
-  if norp then call(next) else call(prev) end
-end
-
--- Execute the last navigation operation based on parameter norp (next_or_prev).
----@param norp boolean Next or prev.
-local exec_last = function(norp)
-  if norp and _next ~= nil then
-    call(_next)
-  elseif not norp and _prev ~= nil then
-    call(_prev)
-  else
-    vim.notify(
-      string.format('[nap.nvim] [%s] Nothing to repeat.', norp and 'Next' or 'Prev'),
-      vim.log.levels.INFO,
-      { title = "nap.nvim", icon = norp and '-->' or '<--' }
-    )
-  end
-end
-
----Soft deprecated, use operator function instead.
--- Add keymaps to navigate between Next And Prev.
----@param key string Operator key, usually is a single character.
----@param next string|function Command to jump next.
----@param prev string|function Command to jump next.
----@param next_desc string Description of jump next.
----@param prev_desc string Description of jump next.
----@param modes table|nil Mode for the keybindings.
-function M.nap(key, next, prev, next_desc, prev_desc, modes)
-  M.operator(key, {
-    next = { command = next, desc = next_desc, },
-    prev = { command = prev, desc = prev_desc, },
-    mode = modes,
-  })
-end
-
 ---@class Command
----@field command string|function Command to jump next or prev.
----@field desc string Description of the command.
+---@field lhs string The lhs of map command
+---@field rhs string|function The rhs of map command
+---@field opts table|nil The opts  of map command
 
 ---@class OperatorConfig
 ---@field next Command Command to jump next.
 ---@field prev Command Command to jump next.
 ---@field mode string|table|nil Mode for the keybindings. If not set, "n" will be used.
 
+-- Record the last operation.
+---@type Command
+local _next = nil
+---@type Command
+local _prev = nil
+
+---@param command Command
+local function replay(command)
+  if command == nil then
+    vim.notify(string.format('[nap] Nothing to repeat.'), vim.log.levels.INFO, { title = "nap.nvim" })
+    return
+  end
+
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(command.lhs, true, false, true), "t", true)
+end
+
+---@param mode string|table
+---@param next Command
+---@param prev Command
+local function map_nap(mode, next, prev)
+  ---@param command Command
+  local function map(command)
+    local opts = command.opts or {}
+    opts.desc = M.options.desc_prefix .. (opts.desc or "")
+    -- String are always treated as expr. Functions are not expr unless user wants to.
+    -- See :h :map-expression
+    opts.expr = type(command.rhs) == "string" or (opts.expr or false)
+
+    vim.keymap.set(mode, command.lhs, function()
+      _next = next
+      _prev = prev
+      if type(command.rhs) == "string" then
+        return command.rhs
+      else
+        return command.rhs()
+      end
+    end, opts)
+  end
+
+  map(next)
+  map(prev)
+end
+
 -- Add or override an operator.
----@param key string Operator key, usually is a single character.
+---@param operator string Operator key, usually is a single character.
 ---@param config false|OperatorConfig Operator configs, including commands and description.
-function M.operator(key, config)
-  if not config then return end
-  local next_key = M.options.next_prefix .. key
-  local prev_key = M.options.prev_prefix .. key
-  local mode = config.mode or "n"
-  vim.keymap.set(mode, next_key, function() exec(config.next.command, config.prev.command, true) end,
-    { desc = M.options.desc_prefix .. config.next.desc })
-  vim.keymap.set(mode, prev_key, function() exec(config.next.command, config.prev.command, false) end,
-    { desc = M.options.desc_prefix .. config.prev.desc })
+function M.map(operator, config)
+  local mode = config and config.mode or "n" or "n"
+  local next_lhs = M.options.next_prefix .. operator
+  local prev_lhs = M.options.prev_prefix .. operator
+
+  if not config then
+    vim.keymap.del(mode, next_lhs)
+    vim.keymap.del(mode, prev_lhs)
+    return
+  end
+  config.next.lhs = next_lhs
+  config.prev.lhs = prev_lhs
+  map_nap(mode, config.next, config.prev)
 end
 
 -- File operator.
@@ -176,122 +162,108 @@ function M.last_file()
   vim.cmd('edit ' .. target_path)
 end
 
--- Jump list
-
-function M.next_jump_list()
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-o>", true, false, true), "t", true)
-end
-
-function M.prev_jump_list()
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, false, true), "t", true)
-end
-
 -- Setup.
 
 ---@class Option
 M.defaults = {
-  next_prefix = "<c-n>", -- <next_prefix><operator> to jump to next
-  prev_prefix = "<c-p>", -- <prev_prefix><operator> to jump to prev
-  next_repeat = "<c-n>", -- <next_repeat> to repeat jump to next
-  prev_repeat = "<c-p>", -- <prev_repeat> to repeat jump to prev
+  next_prefix = "]",      -- <next_prefix><operator> to jump to next
+  prev_prefix = "[",      -- <prev_prefix><operator> to jump to prev
+  next_repeat = "<c-n>",  -- <next_repeat> to repeat jump to next
+  prev_repeat = "<c-p>",  -- <prev_repeat> to repeat jump to prev
   desc_prefix = "[nap] ", -- Prefix string added to keymaps description
   -- All operators.
   ---@type table<string, OperatorConfig>
   operators = {
     ["a"] = {
-      next = { command = "tabnext", desc = "Next tab", },
-      prev = { command = "tabprevious", desc = "Prev tab", },
+      next = { rhs = "<cmd>tabnext<cr>", opts = { desc = "Next tab" } },
+      prev = { rhs = "<cmd>tabprevious<cr>", opts = { desc = "Prev tab" } },
     },
     ["A"] = {
-      next = { command = "tablast", desc = "Last tab", },
-      prev = { command = "tabfirst", desc = "First tab", },
+      next = { rhs = "<cmd>tablast<cr>", opts = { desc = "Last tab" } },
+      prev = { rhs = "<cmd>tabfirst<cr>", opts = { desc = "First tab" } },
     },
     ["b"] = {
-      next = { command = "bnext", desc = "Next buffer", },
-      prev = { command = "bprevious", desc = "Prev buffer", },
+      next = { rhs = "<cmd>bnext<cr>", opts = { desc = "Next buffer" } },
+      prev = { rhs = "<cmd>bprevious<cr>", opts = { desc = "Prev buffer" } },
     },
     ["B"] = {
-      next = { command = "blast", desc = "Last buffer", },
-      prev = { command = "bfirst", desc = "First buffer", },
+      next = { rhs = "<cmd>blast<cr>", opts = { desc = "Last buffer" } },
+      prev = { rhs = "<cmd>bfirst<cr>", opts = { desc = "First buffer" } },
     },
     ["d"] = {
-      next = { command = vim.diagnostic.goto_next, desc = "Next diagnostic", },
-      prev = { command = vim.diagnostic.goto_prev, desc = "Prev diagnostic", },
+      next = { rhs = vim.diagnostic.goto_next, opts = { desc = "Next diagnostic" } },
+      prev = { rhs = vim.diagnostic.goto_prev, opts = { desc = "Prev diagnostic" } },
       mode = { "n", "v", "o" }
     },
     ["e"] = {
-      next = { command = "normal! g;", desc = "Older edit (change-list) item", },
-      prev = { command = "normal! g,", desc = "Newer edit (change-list) item", }
+      next = { rhs = "g;", opts = { desc = "Older edit (change-list) item" } },
+      prev = { rhs = "g,", opts = { desc = "Newer edit (change-list) item" } }
     },
     ["f"] = {
-      next = { command = M.next_file, desc = "Next file", },
-      prev = { command = M.prev_file, desc = "Prev file", },
+      next = { rhs = M.next_file, opts = { desc = "Next file" } },
+      prev = { rhs = M.prev_file, opts = { desc = "Prev file" } },
     },
     ["F"] = {
-      next = { command = M.last_file, desc = "Last file", },
-      prev = { command = M.first_file, desc = "First file", },
-    },
-    ["j"] = {
-      next = { command = M.next_jump_list, desc = "Older jump-list item", },
-      prev = { command = M.prev_jump_list, desc = "Newer jump-list item" },
+      next = { rhs = M.last_file, opts = { desc = "Last file" } },
+      prev = { rhs = M.first_file, opts = { desc = "First file" } },
     },
     ["l"] = {
-      next = { command = "lnext", desc = "Next loclist item", },
-      prev = { command = "lprevious", desc = "Prev loclist item" },
+      next = { rhs = "<cmd>lnext<cr>", opts = { desc = "Next loclist item" } },
+      prev = { rhs = "<cmd>lprevious<cr>", opts = { desc = "Prev loclist item" } }
     },
     ["L"] = {
-      next = { command = "llast", desc = "Last loclist item", },
-      prev = { command = "lfirst", desc = "First loclist item" },
+      next = { rhs = "<cmd>llast<cr>", opts = { desc = "Last loclist item" } },
+      prev = { rhs = "<cmd>lfirst<cr>", opts = { desc = "First loclist item" } }
     },
     ["<C-l>"] = {
-      next = { command = "lnfile", desc = "Next loclist item in different file", },
-      prev = { command = "lpfile", desc = "Prev loclist item in different file" },
+      next = { rhs = "<cmd>lnfile<cr>", opts = { desc = "Next loclist item in different file" } },
+      prev = { rhs = "<cmd>lpfile<cr>", opts = { desc = "Prev loclist item in different file" } }
     },
     ["<M-l>"] = {
-      next = { command = "lnewer", desc = "Next loclist list", },
-      prev = { command = "lolder", desc = "Prev loclist list" },
+      next = { rhs = "<cmd>lnewer<cr>", opts = { desc = "Next loclist list" } },
+      prev = { rhs = "<cmd>lolder<cr>", opts = { desc = "Prev loclist list" } }
     },
     ["q"] = {
-      next = { command = "cnext", desc = "Next quickfix item", },
-      prev = { command = "cprevious", desc = "Prev quickfix item" },
+      next = { rhs = "<cmd>cnext<cr>", opts = { desc = "Next quickfix item" } },
+      prev = { rhs = "<cmd>cprevious<cr>", opts = { desc = "Prev quickfix item" } }
     },
     ["Q"] = {
-      next = { command = "clast", desc = "Last quickfix item", },
-      prev = { command = "cfirst", desc = "First quickfix item" },
+      next = { rhs = "<cmd>clast<cr>", opts = { desc = "Last quickfix item" } },
+      prev = { rhs = "<cmd>cfirst<cr>", opts = { desc = "First quickfix item" } }
     },
     ["<C-q>"] = {
-      next = { command = "cnfile", desc = "Next quickfix item in different file", },
-      prev = { command = "cpfile", desc = "Prev quickfix item in different file" },
+      next = { rhs = "<cmd>cnfile<cr>", opts = { desc = "Next quickfix item in different file" } },
+      prev = { rhs = "<cmd>cpfile<cr>", opts = { desc = "Prev quickfix item in different file" } }
     },
     ["<M-q>"] = {
-      next = { command = "cnewer", desc = "Next quickfix list", },
-      prev = { command = "colder", desc = "Prev quickfix list" },
+      next = { rhs = "<cmd>cnewer<cr>", opts = { desc = "Next quickfix list" } },
+      prev = { rhs = "<cmd>colder<cr>", opts = { desc = "Prev quickfix list" } }
     },
     ["s"] = {
-      next = { command = "normal! ]s", desc = "Next spell error", },
-      prev = { command = "normal! [s", desc = "Prev spell error", },
+      next = { rhs = "]s", opts = { desc = "Next spell error" } },
+      prev = { rhs = "[s", opts = { desc = "Prev spell error" } },
       mode = { "n", "v", "o" },
     },
     ["t"] = {
-      next = { command = "tnext", desc = "Next tag", },
-      prev = { command = "tprevious", desc = "Prev tag" },
+      next = { rhs = "<cmd>tnext<cr>", opts = { desc = "Next tag" } },
+      prev = { rhs = "<cmd>tprevious<cr>", opts = { desc = "Prev tag" } }
     },
     ["T"] = {
-      next = { command = "tlast", desc = "Last tag", },
-      prev = { command = "tfirst", desc = "First tag" },
+      next = { rhs = "<cmd>tlast<cr>", opts = { desc = "Last tag" } },
+      prev = { rhs = "<cmd>tfirst<cr>", opts = { desc = "First tag" } }
     },
     ["<C-t>"] = {
-      next = { command = "ptnext", desc = "Next tag in previous window", },
-      prev = { command = "ptprevious", desc = "Prev tag in previous window" },
+      next = { rhs = "<cmd>ptnext<cr>", opts = { desc = "Next tag in previous window" } },
+      prev = { rhs = "<cmd>ptprevious<cr>", opts = { desc = "Prev tag in previous window" } }
     },
     ["z"] = {
-      next = { command = "normal! zj", desc = "Next fold", },
-      prev = { command = "normal! zk", desc = "Prev fold", },
+      next = { rhs = "zj", opts = { desc = "Next fold" } },
+      prev = { rhs = "zk", opts = { desc = "Prev fold" } },
       mode = { "n", "v", "o" },
     },
     ["'"] = {
-      next = { command = "normal! ]`", desc = "Next lowercase mark", },
-      prev = { command = "normal! [`", desc = "Prev lowercase mark" },
+      next = { rhs = "]`", opts = { desc = "Next lowercase mark" } },
+      prev = { rhs = "[`", opts = { desc = "Prev lowercase mark" } }
     },
   }
 }
@@ -300,23 +272,10 @@ M.defaults = {
 function M.setup(options)
   M.options = vim.tbl_deep_extend("force", {}, M.defaults, options or {})
 
-  vim.keymap.set({ "n", "v", "o" }, M.options.next_repeat, function() exec_last(true) end, { desc = "Repeat next" })
-  vim.keymap.set({ "n", "v", "o" }, M.options.prev_repeat, function() exec_last(false) end, { desc = "Repeat prev" })
+  vim.keymap.set({ "n", "v", "o" }, M.options.next_repeat, function() replay(_next) end, { desc = "Repeat next" })
+  vim.keymap.set({ "n", "v", "o" }, M.options.prev_repeat, function() replay(_prev) end, { desc = "Repeat prev" })
 
-  if M.options.next_repeat == '<cr>' or M.options.prev_repeat == '<cr>' then
-    -- If <cr> is used to repeat jump, it should be disabled in quickfix or command window
-    vim.api.nvim_create_autocmd(
-      "FileType", {
-      pattern = { "qf" },
-      command = [[nnoremap <buffer> <CR> <CR>]]
-    })
-    vim.api.nvim_create_autocmd(
-      "CmdwinEnter", {
-      command = [[nnoremap <buffer> <CR> <CR>]]
-    })
-  end
-
-  for key, config in pairs(M.options.operators) do M.operator(key, config) end
+  for key, config in pairs(M.options.operators) do M.map(key, config) end
 end
 
 -- Plugin integration helpers. Users could assign these to some operator manually.
@@ -328,24 +287,20 @@ function M.gitsigns()
   end
   return {
     next = {
-      command = function()
-        if in_diff_mode() then
-          vim.cmd("normal ]c")
-        else
-          require("gitsigns").next_hunk({ preview = true })
-        end
+      rhs = function()
+        if in_diff_mode() then return ']c' end
+        vim.schedule(function() require("gitsigns").next_hunk({ preview = true }) end)
+        return '<Ignore>'
       end,
-      desc = "Next diff",
+      opts = { desc = "Next diff", expr = true }
     },
     prev = {
-      command = function()
-        if in_diff_mode() then
-          vim.cmd("normal [c")
-        else
-          require("gitsigns").prev_hunk({ preview = true })
-        end
+      rhs = function()
+        if in_diff_mode() then return '[c' end
+        vim.schedule(function() require("gitsigns").prev_hunk({ preview = true }) end)
+        return '<Ignore>'
       end,
-      desc = "Prev diff",
+      opts = { desc = "Prev diff", expr = true },
     },
     mode = { "n", "v", "o" },
   }
@@ -353,18 +308,47 @@ end
 
 function M.aerial()
   return {
-    next = { command = "AerialNext", desc = "Next outline symbol", },
-    prev = { command = "AerialPrev", desc = "Previous outline symbol", },
+    next = { rhs = "<cmd>AerialNext<cr>", opts = { desc = "Next outline symbol" } },
+    prev = { rhs = "<cmd>AerialPrev<cr>", opts = { desc = "Prev outline symbol" } },
     mode = { "n", "v", "o" },
   }
 end
 
 function M.illuminate()
   return {
-    next = { command = require('illuminate').goto_next_reference, desc = "Next cursor word", },
-    prev = { command = require('illuminate').goto_prev_reference, desc = "Prev cursor word", },
+    next = { rhs = require('illuminate').goto_next_reference, opts = { desc = "Next cursor word" } },
+    prev = { rhs = require('illuminate').goto_prev_reference, opts = { desc = "Prev cursor word" } },
     mode = { "n", "x", "o" }
   }
+end
+
+-- Deprecated APIs
+
+-- Use M.map instead. Will be deleted in future.
+--- @deprecated
+function M.operator(key, config)
+  if config and config.next.rhs == nil then
+    local adapter = function(nap)
+      if type(nap.command) == "string" then
+        vim.cmd(nap.command)
+      else
+        nap.command()
+      end
+    end
+    config.next = { rhs = adapter(config.next), opts = { desc = config.next.desc } }
+    config.prev = { rhs = adapter(config.prev), opts = { desc = config.prev.desc } }
+  end
+  M.map(key, config)
+end
+
+-- Use M.map instead. Will be deleted in future.
+--- @deprecated
+function M.nap(key, next, prev, next_desc, prev_desc, modes)
+  M.map(key, {
+    next = { rhs = next, opts = { desc = next_desc }, },
+    prev = { rhs = prev, opts = { desc = prev_desc }, },
+    mode = modes,
+  })
 end
 
 return M
