@@ -193,7 +193,7 @@ M.defaults = {
     ["d"] = {
       next = { rhs = vim.diagnostic.goto_next, opts = { desc = "Next diagnostic" } },
       prev = { rhs = vim.diagnostic.goto_prev, opts = { desc = "Prev diagnostic" } },
-      mode = { "n", "v", "o" }
+      mode = { "n", "x", "o" }
     },
     ["e"] = {
       next = { rhs = "g;", opts = { desc = "Older edit (change-list) item" } },
@@ -242,7 +242,7 @@ M.defaults = {
     ["s"] = {
       next = { rhs = "]s", opts = { desc = "Next spell error" } },
       prev = { rhs = "[s", opts = { desc = "Prev spell error" } },
-      mode = { "n", "v", "o" },
+      mode = { "n", "x", "o" },
     },
     ["t"] = {
       next = { rhs = "<cmd>tnext<cr>", opts = { desc = "Next tag" } },
@@ -259,7 +259,7 @@ M.defaults = {
     ["z"] = {
       next = { rhs = "zj", opts = { desc = "Next fold" } },
       prev = { rhs = "zk", opts = { desc = "Prev fold" } },
-      mode = { "n", "v", "o" },
+      mode = { "n", "x", "o" },
     },
     ["'"] = {
       next = { rhs = "]`", opts = { desc = "Next lowercase mark" } },
@@ -272,8 +272,8 @@ M.defaults = {
 function M.setup(options)
   M.options = vim.tbl_deep_extend("force", {}, M.defaults, options or {})
 
-  vim.keymap.set({ "n", "v", "o" }, M.options.next_repeat, function() replay(_next) end, { desc = "Repeat next" })
-  vim.keymap.set({ "n", "v", "o" }, M.options.prev_repeat, function() replay(_prev) end, { desc = "Repeat prev" })
+  vim.keymap.set({ "n", "x", "o" }, M.options.next_repeat, function() replay(_next) end, { desc = "Repeat next" })
+  vim.keymap.set({ "n", "x", "o" }, M.options.prev_repeat, function() replay(_prev) end, { desc = "Repeat prev" })
 
   for key, config in pairs(M.options.operators) do M.map(key, config) end
 end
@@ -302,7 +302,7 @@ function M.gitsigns()
       end,
       opts = { desc = "Prev diff", expr = true },
     },
-    mode = { "n", "v", "o" },
+    mode = { "n", "x", "o" },
   }
 end
 
@@ -310,7 +310,7 @@ function M.aerial()
   return {
     next = { rhs = "<cmd>AerialNext<cr>", opts = { desc = "Next outline symbol" } },
     prev = { rhs = "<cmd>AerialPrev<cr>", opts = { desc = "Prev outline symbol" } },
-    mode = { "n", "v", "o" },
+    mode = { "n", "x", "o" },
   }
 end
 
