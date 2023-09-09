@@ -3,7 +3,7 @@ local M = {}
 -- Command execution.
 
 ---@class Command
----@field lhs string The lhs of map command
+---@field lhs string|nil The lhs of map command
 ---@field rhs string|function The rhs of map command
 ---@field opts table|nil The opts  of map command
 
