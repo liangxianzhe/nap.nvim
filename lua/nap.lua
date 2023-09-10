@@ -73,6 +73,12 @@ function M.map(operator, config)
   map_nap(mode, config.next, config.prev)
 end
 
+-- APIs to allow repeating manually.
+
+function M.repeat_last_next() replay(_next) end
+
+function M.repeat_last_prev() replay(_prev) end
+
 -- File operator.
 
 -- Get directory containing the buffer, or cwd.
