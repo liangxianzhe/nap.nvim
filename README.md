@@ -165,11 +165,6 @@ require("nap").map('o', require("nap").aerial())
 require("nap").map('r', require("nap").illuminate())
 ```
 
-To remove a default operator:
-```lua
-require("nap").map("a", false)
-```
-
 You can also add/remove operators inside setup call if you prefer to put them in a central place,
 see next section.
 
@@ -183,6 +178,9 @@ require("nap").setup({
     prev_prefix = "[",
     next_repeat = "<c-n>",
     prev_repeat = "<c-p>",
+    -- to exclude some keys from the default
+    exclude_default_operators = {"a", "A"},
+    -- to add custom keys
     operators = {
         ...
     },

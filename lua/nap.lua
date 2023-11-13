@@ -177,6 +177,9 @@ M.defaults = {
   next_repeat = "<c-n>",  -- <next_repeat> to repeat jump to next
   prev_repeat = "<c-p>",  -- <prev_repeat> to repeat jump to prev
   desc_prefix = "[nap] ", -- Prefix string added to keymaps description
+  -- a list of keys to exclude from the following default operators.
+  -- if set to boolean true, then exclude everything
+  exclude_default_operators = {},
   -- All operators.
   ---@type table<string, OperatorConfig>
   operators = {
@@ -281,7 +284,14 @@ function M.setup(options)
   vim.keymap.set({ "n", "x", "o" }, M.options.next_repeat, function() replay(_next) end, { desc = "Repeat next" })
   vim.keymap.set({ "n", "x", "o" }, M.options.prev_repeat, function() replay(_prev) end, { desc = "Repeat prev" })
 
-  for key, config in pairs(M.options.operators) do M.map(key, config) end
+  if M.options.exclude_default_operators ~= true then
+    -- buld a table for search speed
+    local exclude_table = {}
+    for _, v in ipairs(M.options.exclude_default_operators) do exclude_table[v] = true end
+    for key, config in pairs(M.options.operators) do
+      if exclude_table[key] == nil then M.map(key, config) end
+    end
+  end
 end
 
 -- Plugin integration helpers. Users could assign these to some operator manually.
